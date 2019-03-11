@@ -2,27 +2,20 @@ package model;
 
 import java.util.ArrayList;
 
-public class Group {
-
-    private long id;
+public class Group extends ModelObject{
 
     private String name;
 
     private ArrayList<Student> students;
 
-    public Group(long id, String name){
-        this.id = id;
+    public Group(String name){
         this.name = name;
         students = new ArrayList<>();
     }
 
-    public Group(long id, String name, ArrayList<Student> st){
-        this(id, name);
+    public Group(String name, ArrayList<Student> st){
+        this(name);
         students = st;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getName() {

@@ -14,7 +14,7 @@
       <ObjectId>16485</ObjectId>
       <StateNumber>874</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>892</IntrospectionStateNumber>
+      <IntrospectionStateNumber>901</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
     </database>
@@ -117,7 +117,7 @@
       <Comment>standard public schema</Comment>
       <StateNumber>359</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>893</IntrospectionStateNumber>
+      <IntrospectionStateNumber>902</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
@@ -185,7 +185,7 @@
     <table id="30" parent="21" name="learning">
       <ObjectId>16498</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>885</StateNumber>
+      <StateNumber>897</StateNumber>
     </table>
     <table id="31" parent="21" name="progress">
       <ObjectId>16524</ObjectId>
@@ -195,7 +195,7 @@
     <table id="32" parent="21" name="students">
       <ObjectId>16513</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>888</StateNumber>
+      <StateNumber>894</StateNumber>
     </table>
     <table id="33" parent="21" name="subjects">
       <ObjectId>16492</ObjectId>
@@ -258,14 +258,15 @@
     </column>
     <column id="42" parent="30" name="learning_coefficient">
       <Position>4</Position>
-      <DataType>integer|0s</DataType>
+      <DataType>double precision|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>885</StateNumber>
-      <TypeId>23</TypeId>
+      <StateNumber>900</StateNumber>
+      <DefaultExpression>0</DefaultExpression>
+      <TypeId>701</TypeId>
     </column>
     <index id="43" parent="30" name="learning_pk">
       <ObjectId>16501</ObjectId>
-      <StateNumber>885</StateNumber>
+      <StateNumber>897</StateNumber>
       <ColNames>learning_id</ColNames>
       <Unique>1</Unique>
     </index>
@@ -381,15 +382,15 @@
     </column>
     <column id="58" parent="32" name="student_additional_points">
       <Position>4</Position>
-      <DataType>integer|0s</DataType>
+      <DataType>double precision|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>888</StateNumber>
+      <StateNumber>894</StateNumber>
       <DefaultExpression>0</DefaultExpression>
-      <TypeId>23</TypeId>
+      <TypeId>701</TypeId>
     </column>
     <index id="59" parent="32" name="students_pk">
       <ObjectId>16517</ObjectId>
-      <StateNumber>888</StateNumber>
+      <StateNumber>894</StateNumber>
       <ColNames>student_id</ColNames>
       <Unique>1</Unique>
     </index>

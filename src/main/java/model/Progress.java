@@ -1,8 +1,6 @@
 package model;
 
-public class Progress {
-
-    private long id;
+public class Progress extends ModelObject{
 
     private Student student;
 
@@ -10,20 +8,15 @@ public class Progress {
 
     private int progressPoints;
 
-    public Progress(long id, Student student, Learning learning){
-        this.id = id;
+    public Progress(Student student, Learning learning){
         this.student = student;
         this.learning = learning;
         this.progressPoints = 0;
     }
 
-    public Progress(long id, Student student, Learning learning, int progressPoints){
-        this(id, student, learning);
+    public Progress(Student student, Learning learning, int progressPoints){
+        this(student, learning);
         this.progressPoints = progressPoints;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public Student getStudent() {

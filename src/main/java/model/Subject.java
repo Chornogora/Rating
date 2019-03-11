@@ -1,17 +1,11 @@
 package model;
 
-public class Subject {
-    private long id;
+public class Subject extends ModelObject{
 
     private String name;
 
-    public Subject(long id, String name){
-        this.id = id;
+    public Subject(String name){
         this.name = name;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getName() {

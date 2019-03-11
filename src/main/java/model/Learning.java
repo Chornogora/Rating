@@ -1,29 +1,21 @@
 package model;
 
-public class Learning {
-
-    private long id;
+public class Learning extends ModelObject{
 
     private Subject subject;
 
     private Group group;
 
-    private int coefficient;
+    private float coefficient=0;
 
-    public Learning(long id, Subject subject, Group group){
-        this.id = id;
+    public Learning(Subject subject, Group group){
         this.subject = subject;
         this.group = group;
-        coefficient = 0;
     }
 
-    public Learning(long id, Subject subject, Group group, int coefficient){
-        this(id, subject, group);
+    public Learning(Subject subject, Group group, float coefficient){
+        this(subject, group);
         this.coefficient = coefficient;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public Subject getSubject() {
@@ -42,7 +34,7 @@ public class Learning {
         this.group = group;
     }
 
-    public int getCoefficient() {
+    public float getCoefficient() {
         return coefficient;
     }
 

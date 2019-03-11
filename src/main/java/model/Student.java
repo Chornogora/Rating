@@ -1,32 +1,24 @@
 package model;
 
-public class Student {
-
-    private long id;
+public class Student extends ModelObject{
 
     private Group group;
 
     private String name;
 
-    private float additionalPoints;
+    private float additionalPoints = 0;
 
-    public Student(long id, Group group, String name){
-        this.id = id;
-        this.name = name;
+    public Student(Group group, String name){
         this.group = group;
-        this.additionalPoints = 0;
+        this.name = name;
     }
 
-    public Student(long id, Group group, String name, float additionalPoints){
-        this(id, group, name);
+    public Student(Group group, String name, float additionalPoints){
+        this(group, name);
         this.additionalPoints = additionalPoints;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setGroup_id(Group group) {
+    public void setGroup(Group group) {
         this.group= group;
     }
 
@@ -46,7 +38,7 @@ public class Student {
         return additionalPoints;
     }
 
-    public void setAdditionalPoints(float additionalPoints) {
+    public void setAdditionalPoints(float additionalPoints) throws IllegalArgumentException {
         if(additionalPoints < 0 || additionalPoints > 10)
             throw new IllegalArgumentException("Кількість додаткових балів має бути від 0 до 10");
         this.additionalPoints = additionalPoints;
