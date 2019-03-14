@@ -4,10 +4,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
 import model.*;
 import dao.*;
 import model.representation.ProgressResult;
@@ -15,7 +14,10 @@ import model.representation.Rating;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import static javafx.collections.FXCollections.*;
 
 public class TableFormController implements Initializable {
 
@@ -33,6 +35,9 @@ public class TableFormController implements Initializable {
 
     @FXML
     private TableView SSTable;
+
+    @FXML
+    private Pane SubPointsPane;
 
     private Model model;
 
@@ -66,9 +71,9 @@ public class TableFormController implements Initializable {
         String[] values = new String[names.length+1];
         values[0]="Усi групи";
         System.arraycopy(names, 0, values, 1, names.length);
-        GroupChoice.setItems(FXCollections.observableArrayList(values));
-        GroupChoice2.setItems(FXCollections.observableArrayList(values));
-        StudentChoice.setItems(FXCollections.observableArrayList(model.getStudentNames()));
+        GroupChoice.setItems(observableArrayList(values));
+        GroupChoice2.setItems(observableArrayList(values));
+        StudentChoice.setItems(observableArrayList(model.getStudentNames()));
 
         TableColumn<Rating, Long> col = (TableColumn<Rating, Long>) RatingTable.getColumns().get(0);
         col.setCellValueFactory(new PropertyValueFactory<>("studentId"));
@@ -95,6 +100,9 @@ public class TableFormController implements Initializable {
         StudentChoice.setValue("Усi студенти");
         setRatingGroup();
         setGroup();
+
+        ComboBox<String> box = (ComboBox) SubPointsPane.lookup("#SubPointsStudent");
+        box.setItems(observableArrayList(model.getStudentNames()));
     }
 
     @FXML
@@ -109,7 +117,7 @@ public class TableFormController implements Initializable {
             students = group.getStudents();
         }
 
-        ObservableList<Rating> usersData = FXCollections.observableArrayList();
+        ObservableList<Rating> usersData = observableArrayList();
         for(int i = 1; i <= students.size(); ++i){
             Student st = students.get(i-1);
             usersData.add(new Rating(st, model.getStudentRating(st), st.getAdditionalPoints(), model.getStudents().indexOf(st)+1));
@@ -119,7 +127,7 @@ public class TableFormController implements Initializable {
 
     @FXML
     private void setGroup(){
-        ObservableList<String> variants = FXCollections.observableArrayList();
+        ObservableList<String> variants = observableArrayList();
         variants.add("Усi студенти");
         if(GroupChoice2.getValue().equals("Усi групи")){
             variants.addAll(model.getStudentNames());
@@ -148,7 +156,7 @@ public class TableFormController implements Initializable {
             students.add(model.getStudentByName(StudentChoice.getValue()));
         }
 
-        ObservableList<ProgressResult> usersData = FXCollections.observableArrayList();
+        ObservableList<ProgressResult> usersData = observableArrayList();
         for(int i = 1; i <= students.size(); ++i){
             Student st = students.get(i-1);
             ArrayList<Progress> stpr = model.getStudentProgresses(st);
@@ -158,4 +166,84 @@ public class TableFormController implements Initializable {
         SSTable.setItems(usersData);
     }
 
+    //<Установка предметного балла>
+
+    @FXML
+    private void SubjectChoiceEnable(){
+        TextField points = (TextField) SubPointsPane.lookup("#SubPointsPoint");
+        Button button = (Button) SubPointsPane.lookup("#SubPointsButton");
+        points.setDisable(true);
+        points.setText("Предметний бал");
+        button.setDisable(true);
+
+        ComboBox box = (ComboBox) SubPointsPane.lookup("#SubPointsStudent");
+        ComboBox subject = (ComboBox) SubPointsPane.lookup("#SubPointsSubject");
+
+        subject.setDisable(false);
+        subject.setValue("Обрати предмет");
+        ObservableList<String> variants = observableArrayList();
+        List<Subject> list = model.getStudentsSubjects(model.getStudentByName((String)box.getValue()));
+
+        for(Subject sub : list){
+            variants.add(sub.getName());
+        }
+        subject.setItems(variants);
+    }
+
+    @FXML
+    private void PointsChoiceEnable(){
+        TextField points = (TextField) SubPointsPane.lookup("#SubPointsPoint");
+        Button button = (Button) SubPointsPane.lookup("#SubPointsButton");
+        points.setDisable(false);
+        button.setDisable(false);
+    }
+
+    @FXML
+    private void setSubjectPoints(){
+        ComboBox box = (ComboBox) SubPointsPane.lookup("#SubPointsStudent");
+        ComboBox subject = (ComboBox) SubPointsPane.lookup("#SubPointsSubject");
+        TextField points = (TextField) SubPointsPane.lookup("#SubPointsPoint");
+
+        int point = 0;
+        try {
+            point = Integer.valueOf(points.getText());
+            if(point < 0 || point > 100)
+                throw new Exception("Неверный формат данных");
+        }catch(Exception e){
+            e.printStackTrace();
+            throwError("Невірно введений бал. Допустимі цілі значення від 0 до 100.");
+            return;
+        }
+
+        String studentName = (String) box.getValue(), subjectName = (String)subject.getValue();
+        Progress progress = model.getProgressByData(model.getStudentByName(studentName), model.getSubjectByName(subjectName));
+        progress.setProgressPoints(point);
+        new ProgressDao().update(progress);
+
+        refreshTableViews();
+    }
+    //</Установка предметного балла>
+
+    private void refreshTableViews(){
+        setRatingGroup();
+        setGroup();
+    }
+
+    //<Ошибки и предупреждения>
+
+    private void throwError(String text){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Помилка");
+        alert.setContentText(text);
+        alert.showAndWait();
+    }
+
+    private void throwWarning(String text){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Попередження");
+        alert.setContentText(text);
+        alert.showAndWait();
+    }
+
+    //</Ошибки и предупреждения>
 }

@@ -112,6 +112,30 @@ public class Model {
         return null;
     }
 
+    public Subject getSubjectByName(String name){
+        for(Subject sb : subjects)
+            if(sb.getName().equals(name))
+                return sb;
+        return null;
+    }
+
+    public Learning getLearningByData(Group group, Subject subject){
+        for(Learning ln : learnings)
+            if(ln.getGroup().equals(group) && ln.getSubject().equals(subject))
+                return ln;
+        return null;
+    }
+
+    public Progress getProgressByData(Student st, Subject sb){
+        Learning ln = getLearningByData(st.getGroup(), sb);
+        for(Progress pr : progresses)
+            if(pr.getStudent().equals(st) && pr.getLearning().equals(ln))
+                return pr;
+        /*Progress progress = new Progress(st, ln);
+        progresses.add(progress);*/
+        return null;
+    }
+
     public void sortStudentByRating(){
         students.sort((a, b) -> {
             float ar = getStudentRating(a), br = getStudentRating(b);

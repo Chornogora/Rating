@@ -69,7 +69,7 @@ public class ProgressDao extends Dao{
                 }
 
                 Progress progress = new Progress(student, learning, set.getInt(4));
-                learning.setId(set.getLong(1));
+                progress.setId(set.getLong(1));
                 result.add(progress);
             }
 

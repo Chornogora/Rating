@@ -42,10 +42,15 @@
                         <ComboBox fx:id="StudentChoice" layoutX="10.0" layoutY="325.0" onAction="#setStudentChoice" prefWidth="150.0" promptText="Усi студенти" />
                         <ComboBox fx:id="GroupChoice2" layoutX="10.0" layoutY="290.0" onAction="#setGroup" prefWidth="150.0" promptText="Усi групи" />
                <Separator layoutX="170.0" layoutY="292.0" orientation="VERTICAL" prefHeight="60.0" prefWidth="7.0" />
-               <ComboBox layoutX="185.0" layoutY="290.0" prefWidth="170.0" promptText="Обрати студента" />
-               <ComboBox disable="true" layoutX="369.0" layoutY="290.0" prefWidth="170.0" promptText="Обрати предмет" />
-               <TextField disable="true" layoutX="185.0" layoutY="325.0" prefWidth="170.0" promptText="Предметний бал" />
-               <Button disable="true" layoutX="369.0" layoutY="325.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="170.0" text="Встановити" />
+               <Pane fx:id="SubPointsPane" layoutX="181.0" layoutY="289.0" prefHeight="68.0" prefWidth="404.0">
+                  <children>
+      
+                             <TextField fx:id="SubPointsPoint" disable="true" layoutX="20.0" layoutY="34.0" prefWidth="170.0" promptText="Предметний бал" />
+                             <ComboBox fx:id="SubPointsSubject" disable="true" layoutX="220.0" layoutY="1.0" onAction="#PointsChoiceEnable" prefWidth="170.0" promptText="Обрати предмет" />
+                             <ComboBox fx:id="SubPointsStudent" layoutX="20.0" layoutY="1.0" onAction="#SubjectChoiceEnable" prefWidth="170.0" promptText="Обрати студента" />
+                             <Button fx:id="SubPointsButton" disable="true" layoutX="220.0" layoutY="34.0" mnemonicParsing="false" onAction="#setSubjectPoints" prefHeight="26.0" prefWidth="170.0" text="Встановити" />
+                  </children>
+               </Pane>
                   </AnchorPane>
           </Tab>
          <Tab text="Студенти і групи">
