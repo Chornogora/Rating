@@ -33,4 +33,17 @@ public class Group extends ModelObject{
     public void setStudents(ArrayList<Student> students) {
         this.students = students;
     }
+
+    public String[] getStudentNames(){
+        int size = students.size();
+        String[] names = new String[size];
+        for(int i = 0; i < size; ++i){
+            names[i] = this.students.get(i).getName();
+        }
+        return names;
+    }
+
+    public void addStudent(Student st){
+        students.add(st);
+    }
 }

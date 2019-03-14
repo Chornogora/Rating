@@ -79,18 +79,4 @@ public class ProgressDao extends Dao{
         }
         return null;
     }
-
-    public static void main(String[] args) {
-        GroupDao gdao = new GroupDao();
-        ArrayList<Group> glist = gdao.select();
-        StudentDao sdao = new StudentDao();
-        ArrayList<Student> slist = sdao.select(glist);
-        SubjectDao subdao = new SubjectDao();
-        ArrayList<Subject> sublist = subdao.select();
-        LearningDao ldao = new LearningDao();
-        ArrayList<Learning> llist = ldao.select(glist, sublist);
-        ProgressDao pdao = new ProgressDao();
-        ArrayList<Progress> plist = pdao.select(slist, llist);
-        System.out.println(plist.size());
-    }
 }

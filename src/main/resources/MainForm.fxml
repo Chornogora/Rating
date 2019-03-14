@@ -6,18 +6,17 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainFormController">
-   <children>
       <Label alignment="TOP_CENTER" layoutX="59.0" layoutY="48.0" text="Формування рейтингу студентiв" textOverrun="CLIP">
          <font>
             <Font size="28.0" />
          </font>
       </Label>
-      <Button layoutX="147.0" layoutY="154.0" mnemonicParsing="false" text="База даних студентiв">
+      <Button layoutX="147.0" layoutY="154.0" mnemonicParsing="false" text="База даних студентiв" fx:id="TableButton">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
-      <Button layoutX="147.0" layoutY="232.0" mnemonicParsing="false" onMouseClicked="#react" prefHeight="46.0" prefWidth="306.0" text="Про програму">
+      <Button layoutX="147.0" layoutY="232.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="306.0" text="Про програму" fx:id="AuthorButton">
          <font>
             <Font size="24.0" />
          </font>
@@ -33,5 +32,4 @@
          </font>
       </Label>
       <Button layoutX="216.0" layoutY="360.0" mnemonicParsing="false" onMouseClicked="#checkForConnection" text="Перевiрити з'єднання" />
-   </children>
 </AnchorPane>

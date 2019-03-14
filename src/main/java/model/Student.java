@@ -43,4 +43,9 @@ public class Student extends ModelObject{
             throw new IllegalArgumentException("Кількість додаткових балів має бути від 0 до 10");
         this.additionalPoints = additionalPoints;
     }
+
+    @Override
+    public String toString(){
+        return this.getName();
+    }
 }

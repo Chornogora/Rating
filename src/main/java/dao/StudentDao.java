@@ -58,6 +58,8 @@ public class StudentDao extends Dao {
                         Student student = new Student(group, set.getString(3), set.getFloat(4));
                         student.setId(set.getLong(1));
                         result.add(student);
+
+                        group.addStudent(student);
                     }
                 }
             }

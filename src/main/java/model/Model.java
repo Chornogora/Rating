@@ -1,7 +1,7 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +27,7 @@ public class Model {
 
     public void setGroups(ArrayList<Group> groups) {
         this.groups = groups;
+        groups.sort(Comparator.comparing(Group::getName));
     }
 
     public void setSubjects(ArrayList<Subject> subjects) {
@@ -46,17 +47,14 @@ public class Model {
                 .filter(progress -> progress.getStudent().equals(student))
                 .collect(Collectors.toList());
 
-        //int[][] points = new int[stProgresses.size()][2];
         float coefSum=0;
         float sum = 0;
         for(int i = 0; i < stProgresses.size(); ++i){
-            //points[i][0] = stProgresses.get(i).getLearning().getCoefficient();
-            //points[i][1] = stProgresses.get(i).getProgressPoints();
             sum += stProgresses.get(i).getLearning().getCoefficient() * stProgresses.get(i).getProgressPoints();
             coefSum += stProgresses.get(i).getLearning().getCoefficient();
         }
 
-        return (float)(((sum/coefSum)*0.9) + student.getAdditionalPoints());
+        return Float.valueOf(String.format("%.2f", (float)(((sum/coefSum)*0.9) + student.getAdditionalPoints())));
     }
 
     public List<Learning> getStudentsLearnings(Student student){
@@ -72,5 +70,60 @@ public class Model {
         for(Learning ln : stLearnings)
             result.add(ln.getSubject());
         return result;
+    }
+
+    public String[] getGroupNames(){
+        String[] names = new String[groups.size()];
+        for(int i = 0; i < names.length; ++i){
+            names[i] = groups.get(i).getName();
+        }
+        return names;
+    }
+
+    public Group getGroupByName(String name){
+        for(Group group : groups)
+            if(group.getName().equals(name))
+                return group;
+        return null;
+    }
+
+    public ArrayList<Progress> getStudentProgresses(Student student){
+        ArrayList<Progress> result = new ArrayList<>();
+        for(Progress pr : progresses){
+            if(pr.getStudent().equals(student))
+                result.add(pr);
+        }
+        return result;
+    }
+
+    public String[] getStudentNames(){
+        int size = students.size();
+        String[] names = new String[size];
+        for(int i = 0; i < size; ++i){
+            names[i] = students.get(i).getName();
+        }
+        return names;
+    }
+
+    public Student getStudentByName(String name){
+        for(Student st : students)
+            if(st.getName().equals(name))
+                return st;
+        return null;
+    }
+
+    public void sortStudentByRating(){
+        students.sort((a, b) -> {
+            float ar = getStudentRating(a), br = getStudentRating(b);
+            if( ar - br > 0)
+                return -1;
+            else if (ar - br < 0)
+                return 1;
+            else return 0;
+        });
+    }
+
+    public ArrayList<Student> getStudents() {
+        return students;
     }
 }

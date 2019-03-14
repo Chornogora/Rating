@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane prefHeight="415.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TableFormController">
+      <TabPane layoutX="3.0" layoutY="14.0" prefHeight="398.0" prefWidth="594.0" style="-fx-border-width: 3px; -fx-border-color: black;" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab closable="false" text="Рейтинг студентiв">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="359.0" prefWidth="571.0">
+                        <TableView fx:id="RatingTable" layoutY="8.0" prefHeight="305.0" prefWidth="585.0">
+                          <columns>
+                            <TableColumn prefWidth="100.0" text="Id студента" />
+                            <TableColumn minWidth="0.0" prefWidth="60.0" text="Мiсце" />
+                              <TableColumn prefWidth="250.0" text="ПIБ студента" />
+                     <TableColumn prefWidth="100.0" resizable="false" text="Група" />
+                              <TableColumn resizable="false" text="Бал" />
+                          </columns>
+                        </TableView>
+                        <ComboBox fx:id="GroupChoice" layoutX="10.0" layoutY="325.0" onAction="#setRatingGroup" prefWidth="150.0" promptText="Усі групи" />
+                  </AnchorPane>
+          </Tab>
+          <Tab closable="false" text="Предметнi бали">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <TableView fx:id="SSTable" layoutY="8.0" prefHeight="275.0" prefWidth="585.0">
+                          <columns>
+                            <TableColumn prefWidth="100.0" text="Id студента" />
+                            <TableColumn prefWidth="200.0" text="ПIБ студента" />
+                              <TableColumn prefWidth="140.0" text="Назва предмета" />
+                              <TableColumn prefWidth="143.0" text="Предметний Бал" />
+                          </columns>
+                        </TableView>
+                        <ComboBox fx:id="StudentChoice" layoutX="10.0" layoutY="325.0" onAction="#setStudentChoice" prefWidth="150.0" promptText="Усi студенти" />
+                        <ComboBox fx:id="GroupChoice2" layoutX="10.0" layoutY="290.0" onAction="#setGroup" prefWidth="150.0" promptText="Усi групи" />
+               <Separator layoutX="170.0" layoutY="292.0" orientation="VERTICAL" prefHeight="60.0" prefWidth="7.0" />
+               <ComboBox layoutX="185.0" layoutY="290.0" prefWidth="170.0" promptText="Обрати студента" />
+               <ComboBox disable="true" layoutX="369.0" layoutY="290.0" prefWidth="170.0" promptText="Обрати предмет" />
+               <TextField disable="true" layoutX="185.0" layoutY="325.0" prefWidth="170.0" promptText="Предметний бал" />
+               <Button disable="true" layoutX="369.0" layoutY="325.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="170.0" text="Встановити" />
+                  </AnchorPane>
+          </Tab>
+         <Tab text="Студенти і групи">
+           <content>
+             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="298.0" prefWidth="571.0">
+                  <children>
+                     <TableView layoutY="8.0" prefHeight="260.0" prefWidth="585.0">
+                       <columns>
+                         <TableColumn prefWidth="100.0" text="Id студента" />
+                         <TableColumn prefWidth="170.0" text="ПIБ студента" />
+                           <TableColumn prefWidth="100.0" text="Група" />
+                           <TableColumn prefWidth="130.0" text="Додатковi бали" />
+                           <TableColumn prefWidth="42.5" text="X" />
+                           <TableColumn prefWidth="42.5" text="E" />
+                       </columns>
+                     </TableView>
+                     <Pane disable="true" layoutX="2.0" layoutY="269.0" prefHeight="40.0" prefWidth="585.0">
+                        <children>
+                           <Button layoutX="485.0" layoutY="7.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="Змiнити" />
+                           <TextField layoutY="7.0" prefHeight="26.0" prefWidth="236.0" promptText="ПIБ студента" />
+                           <TextField layoutX="395.0" layoutY="7.0" prefHeight="26.0" prefWidth="83.0" promptText="Д. Бали" />
+                           <ComboBox layoutX="247.0" layoutY="7.0" prefHeight="26.0" prefWidth="138.0" promptText="Група" />
+                        </children>
+                     </Pane>
+                     <Pane layoutX="2.0" layoutY="315.0" prefHeight="40.0" prefWidth="585.0">
+                        <children>
+                           <Button layoutX="485.0" layoutY="7.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="Додати" />
+                           <TextField layoutY="7.0" prefHeight="26.0" prefWidth="236.0" promptText="ПIБ студента" />
+                           <TextField layoutX="396.0" layoutY="7.0" prefHeight="26.0" prefWidth="83.0" promptText="Д. Бали" />
+                           <ComboBox layoutX="247.0" layoutY="7.0" prefHeight="26.0" prefWidth="138.0" promptText="Група" />
+                        </children></Pane>
+                  </children>
+               </AnchorPane>
+           </content>
+         </Tab>
+         <Tab text="Групи і предмети">
+           <content>
+             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <children>
+                     <TableView layoutY="8.0" prefHeight="200.0" prefWidth="585.0">
+                       <columns>
+                         <TableColumn prefWidth="200.0" text="Група" />
+                         <TableColumn prefWidth="200.0" text="Предмет" />
+                           <TableColumn prefWidth="185.0" text="Коефіцієнт" />
+                       </columns>
+                     </TableView>
+                     <Separator layoutX="195.0" layoutY="220.0" orientation="VERTICAL" prefHeight="125.0" prefWidth="5.0" />
+                     <Label layoutX="80.0" layoutY="212.0" text="Групи" />
+                     <Label layoutX="260.0" layoutY="212.0" text="Предмети" />
+                     <Separator layoutX="394.0" layoutY="220.0" orientation="VERTICAL" prefHeight="125.0" prefWidth="5.0" />
+                     <Label layoutX="450.0" layoutY="212.0" text="Коефіцієнти" />
+                     <ComboBox layoutX="5.0" layoutY="238.0" prefWidth="187.0" promptText="Обрана група" />
+                     <TextField layoutX="5.0" layoutY="280.0" prefHeight="26.0" prefWidth="95.0" promptText="Нова назва" />
+                     <Button layoutX="5.0" layoutY="320.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="95.0" text="Змiнити" />
+                     <Button layoutX="105.0" layoutY="320.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="87.0" text="Видалити" />
+                     <Button layoutX="105.0" layoutY="280.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="87.0" text="Додати" />
+                     <ComboBox layoutX="201.0" layoutY="238.0" prefWidth="189.0" promptText="Обраний предмет" />
+                     <TextField layoutX="201.0" layoutY="280.0" prefWidth="95.0" promptText="Нова назва" />
+                     <Button layoutX="303.0" layoutY="280.0" mnemonicParsing="false" prefWidth="87.0" text="Додати" />
+                     <Button layoutX="201.0" layoutY="320.0" mnemonicParsing="false" prefWidth="95.0" text="Змiнити" />
+                     <Button layoutX="303.0" layoutY="320.0" mnemonicParsing="false" prefWidth="87.0" text="Видалити" />
+                     <ComboBox layoutX="400.0" layoutY="238.0" prefWidth="182.0" promptText="Обрана група" />
+                     <ComboBox layoutX="400.0" layoutY="280.0" prefWidth="182.0" promptText="Обраний предмет" />
+                     <TextField layoutX="400.0" layoutY="320.0" prefWidth="95.0" promptText="Коефіцієнт" />
+                     <Button layoutX="502.0" layoutY="320.0" mnemonicParsing="false" prefWidth="80.0" text="Змiнити" />
+                  </children></AnchorPane>
+           </content>
+         </Tab>
+        </tabs>
+      </TabPane>
+</AnchorPane>
