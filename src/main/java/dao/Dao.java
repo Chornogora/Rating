@@ -27,7 +27,7 @@ public abstract class Dao {
         }
     }
 
-    protected boolean delete(ModelObject object){
+    public boolean delete(ModelObject object){
         try(Connection connection = DriverManager.getConnection(connectionURL, userName, password)){
             Statement st = connection.createStatement();
 

@@ -150,4 +150,8 @@ public class Model {
     public ArrayList<Student> getStudents() {
         return students;
     }
+
+    public ArrayList<Group> getGroups(){
+        return groups;
+    }
 }

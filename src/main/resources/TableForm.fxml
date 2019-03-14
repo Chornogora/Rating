@@ -98,24 +98,36 @@
                        </columns>
                      </TableView>
                      <Separator layoutX="195.0" layoutY="220.0" orientation="VERTICAL" prefHeight="125.0" prefWidth="5.0" />
-                     <Label layoutX="80.0" layoutY="212.0" text="Групи" />
-                     <Label layoutX="260.0" layoutY="212.0" text="Предмети" />
                      <Separator layoutX="394.0" layoutY="220.0" orientation="VERTICAL" prefHeight="125.0" prefWidth="5.0" />
-                     <Label layoutX="450.0" layoutY="212.0" text="Коефіцієнти" />
-                     <ComboBox layoutX="5.0" layoutY="238.0" prefWidth="187.0" promptText="Обрана група" />
-                     <TextField layoutX="5.0" layoutY="280.0" prefHeight="26.0" prefWidth="95.0" promptText="Нова назва" />
-                     <Button layoutX="5.0" layoutY="320.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="95.0" text="Змiнити" />
-                     <Button layoutX="105.0" layoutY="320.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="87.0" text="Видалити" />
-                     <Button layoutX="105.0" layoutY="280.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="87.0" text="Додати" />
-                     <ComboBox layoutX="201.0" layoutY="238.0" prefWidth="189.0" promptText="Обраний предмет" />
-                     <TextField layoutX="201.0" layoutY="280.0" prefWidth="95.0" promptText="Нова назва" />
-                     <Button layoutX="303.0" layoutY="280.0" mnemonicParsing="false" prefWidth="87.0" text="Додати" />
-                     <Button layoutX="201.0" layoutY="320.0" mnemonicParsing="false" prefWidth="95.0" text="Змiнити" />
-                     <Button layoutX="303.0" layoutY="320.0" mnemonicParsing="false" prefWidth="87.0" text="Видалити" />
-                     <ComboBox layoutX="400.0" layoutY="238.0" prefWidth="182.0" promptText="Обрана група" />
-                     <ComboBox layoutX="400.0" layoutY="280.0" prefWidth="182.0" promptText="Обраний предмет" />
-                     <TextField layoutX="400.0" layoutY="320.0" prefWidth="95.0" promptText="Коефіцієнт" />
-                     <Button layoutX="502.0" layoutY="320.0" mnemonicParsing="false" prefWidth="80.0" text="Змiнити" />
+                     <Pane fx:id="GroupPane" layoutX="-1.0" layoutY="211.0" prefHeight="140.0" prefWidth="194.0">
+                        <children>
+                           <Label layoutX="75.0" text="Групи" />
+                           <ComboBox fx:id="GroupBox" layoutX="5.0" layoutY="25.0" prefWidth="187.0" promptText="Обрана група" />
+                           <TextField fx:id="GroupName" layoutX="5.0" layoutY="70.0" prefHeight="26.0" prefWidth="95.0" promptText="Нова назва" />
+                           <Button fx:id="GroupChange" layoutX="5.0" layoutY="105.0" mnemonicParsing="false" onAction="#changeGroup" prefHeight="26.0" prefWidth="95.0" text="Змiнити" />
+                           <Button fx:id="GroupDelete" layoutX="105.0" layoutY="105.0" mnemonicParsing="false" onAction="#deleteGroup" prefHeight="26.0" prefWidth="87.0" text="Видалити" />
+                           <Button fx:id="GroupAdd" layoutX="105.0" layoutY="70.0" mnemonicParsing="false" onAction="#addGroup" prefHeight="26.0" prefWidth="87.0" text="Додати" />
+                        </children>
+                     </Pane>
+                     <Pane layoutX="198.0" layoutY="211.0" prefHeight="134.0" prefWidth="197.0">
+                        <children>
+                           <Label layoutX="75.0" text="Предмети" />
+                           <ComboBox layoutX="5.0" layoutY="25.0" prefWidth="189.0" promptText="Обраний предмет" />
+                           <TextField layoutX="5.0" layoutY="70.0" prefWidth="95.0" promptText="Нова назва" />
+                           <Button layoutX="105.0" layoutY="70.0" mnemonicParsing="false" prefWidth="87.0" text="Додати" />
+                           <Button layoutX="5.0" layoutY="105.0" mnemonicParsing="false" prefWidth="95.0" text="Змiнити" />
+                           <Button layoutX="105.0" layoutY="105.0" mnemonicParsing="false" prefWidth="87.0" text="Видалити" />
+                        </children>
+                     </Pane>
+                     <Pane layoutX="395.0" layoutY="206.0" prefHeight="153.0" prefWidth="196.0">
+                        <children>
+                           <Label layoutX="60.0" layoutY="5.0" text="Коефіцієнти" />
+                           <ComboBox layoutX="5.0" layoutY="75.0" prefWidth="182.0" promptText="Обрана група" />
+                           <ComboBox layoutX="5.0" layoutY="30.0" prefWidth="182.0" promptText="Обраний предмет" />
+                           <TextField layoutX="5.0" layoutY="110.0" prefWidth="95.0" promptText="Коефіцієнт" />
+                           <Button layoutX="105.0" layoutY="110.0" mnemonicParsing="false" prefWidth="80.0" text="Змiнити" />
+                        </children>
+                     </Pane>
                   </children></AnchorPane>
            </content>
          </Tab>

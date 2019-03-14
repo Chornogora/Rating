@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,6 +14,7 @@ import model.representation.Rating;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static javafx.collections.FXCollections.*;
@@ -38,6 +38,9 @@ public class TableFormController implements Initializable {
 
     @FXML
     private Pane SubPointsPane;
+
+    @FXML
+    private Pane GroupPane;
 
     private Model model;
 
@@ -96,13 +99,11 @@ public class TableFormController implements Initializable {
         sscol4.setCellValueFactory(new PropertyValueFactory<>("points"));
 
         GroupChoice.setValue("Усi групи");
-        GroupChoice2.setValue("ПЗПИ-17-1");
+        GroupChoice2.setValue("Усi групи");
         StudentChoice.setValue("Усi студенти");
-        setRatingGroup();
-        setGroup();
 
-        ComboBox<String> box = (ComboBox) SubPointsPane.lookup("#SubPointsStudent");
-        box.setItems(observableArrayList(model.getStudentNames()));
+        refreshComboBoxes();
+        refreshTableViews();
     }
 
     @FXML
@@ -129,7 +130,8 @@ public class TableFormController implements Initializable {
     private void setGroup(){
         ObservableList<String> variants = observableArrayList();
         variants.add("Усi студенти");
-        if(GroupChoice2.getValue().equals("Усi групи")){
+        String value = GroupChoice2.getValue();
+        if(value.equals("Усi групи")){
             variants.addAll(model.getStudentNames());
         }else{
             variants.addAll(model.getGroupByName(GroupChoice2.getValue()).getStudentNames());
@@ -176,13 +178,14 @@ public class TableFormController implements Initializable {
         points.setText("Предметний бал");
         button.setDisable(true);
 
-        ComboBox box = (ComboBox) SubPointsPane.lookup("#SubPointsStudent");
-        ComboBox subject = (ComboBox) SubPointsPane.lookup("#SubPointsSubject");
+        ComboBox<String> box = (ComboBox<String>) SubPointsPane.lookup("#SubPointsStudent");
+        ComboBox<String> subject = (ComboBox<String>) SubPointsPane.lookup("#SubPointsSubject");
 
-        subject.setDisable(false);
         subject.setValue("Обрати предмет");
+        subject.setDisable(false);
+
         ObservableList<String> variants = observableArrayList();
-        List<Subject> list = model.getStudentsSubjects(model.getStudentByName((String)box.getValue()));
+        List<Subject> list = model.getStudentsSubjects(model.getStudentByName(box.getValue()));
 
         for(Subject sub : list){
             variants.add(sub.getName());
@@ -204,14 +207,14 @@ public class TableFormController implements Initializable {
         ComboBox subject = (ComboBox) SubPointsPane.lookup("#SubPointsSubject");
         TextField points = (TextField) SubPointsPane.lookup("#SubPointsPoint");
 
-        int point = 0;
+        int point;
         try {
             point = Integer.valueOf(points.getText());
             if(point < 0 || point > 100)
                 throw new Exception("Неверный формат данных");
         }catch(Exception e){
             e.printStackTrace();
-            throwError("Невірно введений бал. Допустимі цілі значення від 0 до 100.");
+            throwError("Невірно введений бал!");
             return;
         }
 
@@ -224,26 +227,124 @@ public class TableFormController implements Initializable {
     }
     //</Установка предметного балла>
 
-    private void refreshTableViews(){
-        setRatingGroup();
-        setGroup();
+    //<Работа с группами>
+
+    private String getNewGroupName(){
+        TextField groupName = (TextField)GroupPane.lookup("#GroupName");
+        return groupName.getText();
     }
+
+    private String getSelectedGroupName(){
+        ComboBox<String> groupBox = (ComboBox<String>)GroupPane.lookup("#GroupBox");
+        return groupBox.getValue();
+    }
+
+    @FXML
+    private void addGroup(){
+        String newGroupName = getNewGroupName();
+
+        if(model.getGroupByName(newGroupName) != null){
+            throwError("Назва групи не є унікальною!");
+            return;
+        }else if(newGroupName.trim().equals("")){
+            throwError("Неправильна назва групи!");
+            return;
+        }
+
+        Group group = new Group(newGroupName);
+        model.getGroups().add(group);
+        new GroupDao().insert(group);
+
+        refreshComboBoxes();
+        refreshTableViews();
+    }
+
+    @FXML
+    private void changeGroup(){
+
+        Group group = model.getGroupByName(getSelectedGroupName());
+        if(group == null){
+            throwError("Не обрана група для змiни назви!");
+        }
+
+        String newGroupName = getNewGroupName();
+
+        if(model.getGroupByName(newGroupName) != null){
+            throwError("Назва групи не є унікальною!");
+            return;
+        }
+
+        group.setName(newGroupName);
+        new GroupDao().update(group);
+
+        refreshComboBoxes();
+        refreshTableViews();
+    }
+
+    @FXML
+    private void deleteGroup(){
+        Group group = model.getGroupByName(getSelectedGroupName());
+        if(group == null){
+            throwError("Не обрана група для видалення!");
+            return;
+        }
+
+        if(throwWarning("Ця дія призведе до втрати даних про студентів цієї групи. Ви впевнені, що хочете продовжити?")){
+
+            model.getGroups().remove(group);
+            new GroupDao().delete(group);
+
+            refreshComboBoxes();
+            refreshTableViews();
+        }
+    }
+
+    //</Работа с группами>
 
     //<Ошибки и предупреждения>
 
     private void throwError(String text){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Помилка");
+        alert.setHeaderText("Помилка в роботi програми");
         alert.setContentText(text);
         alert.showAndWait();
     }
 
-    private void throwWarning(String text){
-        Alert alert = new Alert(Alert.AlertType.WARNING);
+    private boolean throwWarning(String text){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Попередження");
         alert.setContentText(text);
-        alert.showAndWait();
+        Optional<ButtonType> result = alert.showAndWait();
+
+        return result.get() == ButtonType.OK;
     }
 
     //</Ошибки и предупреждения>
+
+    //<Обновление элементов интерфейса>
+
+    private void refreshTableViews(){
+        setRatingGroup();
+        setGroup();
+    }
+
+    private void refreshComboBoxes(){
+        GroupChoice.setItems(observableArrayList(model.getGroupNames()));
+        GroupChoice.setValue("Усi групи");
+
+        GroupChoice2.setItems(observableArrayList(model.getGroupNames()));
+        GroupChoice2.setValue("Усi групи");
+
+        StudentChoice.setItems(observableArrayList(model.getStudentNames()));
+        StudentChoice.setValue("Усi студенти");
+
+        ComboBox<String> box = (ComboBox<String>) SubPointsPane.lookup("#SubPointsStudent");
+        box.setItems(observableArrayList(model.getStudentNames()));
+
+        ComboBox<String> groupbox = (ComboBox<String>) GroupPane.lookup("#GroupBox");
+        groupbox.setItems(observableArrayList(model.getGroupNames()));
+    }
+
+    //</Обновление элементов интерфейса>
 }
