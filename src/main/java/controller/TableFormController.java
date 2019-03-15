@@ -417,6 +417,15 @@ public class TableFormController implements Initializable {
         } else if (throwWarning("Додати предмет " + learningSub.getValue() + " до групи " + learningGroup.getValue() + "?")) {
             model.getLearnings().add(learning);
             new LearningDao().insert(learning);
+
+            //SMART добавление
+            ArrayList<Student> students = learning.getGroup().getStudents();
+            ProgressDao prdao = new ProgressDao();
+            for(Student st : students){
+                Progress progress = new Progress(st, learning);
+                model.getProgresses().add(progress);
+                prdao.insert(progress);
+            }
         } else {
             return;
         }
@@ -458,6 +467,15 @@ public class TableFormController implements Initializable {
         student.getGroup().addStudent(student);
 
         new StudentDao().insert(student);
+
+        //SMART добавление
+        List<Learning> stLearnings = model.getStudentsLearnings(student);
+        ProgressDao prdao = new ProgressDao();
+        for(Learning learn : stLearnings){
+            Progress pr = new Progress(student, learn);
+            model.getProgresses().add(pr);
+            prdao.insert(pr);
+        }
 
         refreshComboBoxes();
         refreshTableViews();

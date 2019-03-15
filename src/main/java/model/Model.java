@@ -170,4 +170,8 @@ public class Model {
     public ArrayList<Learning> getLearnings(){
         return  learnings;
     }
+
+    public ArrayList<Progress> getProgresses(){
+        return  progresses;
+    }
 }
