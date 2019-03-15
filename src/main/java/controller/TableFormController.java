@@ -8,8 +8,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import model.*;
 import dao.*;
-import model.representation.ProgressResult;
-import model.representation.Rating;
+import representation.*;
 
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -32,7 +31,13 @@ public class TableFormController implements Initializable {
     private TableView<Rating> RatingTable;
 
     @FXML
-    private TableView SSTable;
+    private TableView<ProgressResult> SSTable;
+
+    @FXML
+    private TableView<SubjectDistribution> DistribTable;
+
+    @FXML
+    private TableView<Rating> StGroups;
 
     @FXML
     private Pane SubPointsPane;
@@ -96,14 +101,36 @@ public class TableFormController implements Initializable {
         TableColumn<Rating, Float> col5 = (TableColumn<Rating, Float>) RatingTable.getColumns().get(4);
         col5.setCellValueFactory(new PropertyValueFactory<>("points"));
 
-        TableColumn<Rating, Long> sscol = (TableColumn<Rating, Long>) SSTable.getColumns().get(0);
+        TableColumn<ProgressResult, Long> sscol = (TableColumn<ProgressResult, Long>) SSTable.getColumns().get(0);
         sscol.setCellValueFactory(new PropertyValueFactory<>("studentId"));
-        TableColumn<Rating, String> sscol2 = (TableColumn<Rating, String>) SSTable.getColumns().get(1);
+        TableColumn<ProgressResult, String> sscol2 = (TableColumn<ProgressResult, String>) SSTable.getColumns().get(1);
         sscol2.setCellValueFactory(new PropertyValueFactory<>("studentName"));
-        TableColumn<Rating, String> sscol3 = (TableColumn<Rating, String>) SSTable.getColumns().get(2);
+        TableColumn<ProgressResult, String> sscol3 = (TableColumn<ProgressResult, String>) SSTable.getColumns().get(2);
         sscol3.setCellValueFactory(new PropertyValueFactory<>("subjectName"));
-        TableColumn<Rating, Float> sscol4 = (TableColumn<Rating, Float>) SSTable.getColumns().get(3);
+        TableColumn<ProgressResult, Integer> sscol4 = (TableColumn<ProgressResult, Integer>) SSTable.getColumns().get(3);
         sscol4.setCellValueFactory(new PropertyValueFactory<>("points"));
+
+        TableColumn<SubjectDistribution, String> dcol = (TableColumn<SubjectDistribution, String>) DistribTable.getColumns().get(0);
+        dcol.setCellValueFactory(new PropertyValueFactory<>("groupName"));
+        TableColumn<SubjectDistribution, String> dcol2 = (TableColumn<SubjectDistribution, String>) DistribTable.getColumns().get(1);
+        dcol2.setCellValueFactory(new PropertyValueFactory<>("subjectName"));
+        TableColumn<SubjectDistribution, Float> dcol3 = (TableColumn<SubjectDistribution, Float>) DistribTable.getColumns().get(2);
+        dcol3.setCellValueFactory(new PropertyValueFactory<>("coefficient"));
+        TableColumn<SubjectDistribution, Button> dcol4 = (TableColumn<SubjectDistribution, Button>) DistribTable.getColumns().get(3);
+        dcol4.setCellValueFactory(new PropertyValueFactory<>("delButton"));
+
+        TableColumn<Rating, Long> stgcol = (TableColumn<Rating, Long>) StGroups.getColumns().get(0);
+        stgcol.setCellValueFactory(new PropertyValueFactory<>("studentId"));
+        TableColumn<Rating, String> stgcol2 = (TableColumn<Rating, String>) StGroups.getColumns().get(1);
+        stgcol2.setCellValueFactory(new PropertyValueFactory<>("studentName"));
+        TableColumn<Rating, String> stgcol3 = (TableColumn<Rating, String>) StGroups.getColumns().get(2);
+        stgcol3.setCellValueFactory(new PropertyValueFactory<>("groupName"));
+        TableColumn<Rating, Float> stgcol4 = (TableColumn<Rating, Float>) StGroups.getColumns().get(3);
+        stgcol4.setCellValueFactory(new PropertyValueFactory<>("additionalPoints"));
+        TableColumn<Rating, Button> stgcol5 = (TableColumn<Rating, Button>) StGroups.getColumns().get(4);
+        stgcol5.setCellValueFactory(new PropertyValueFactory<>("delButton"));
+        TableColumn<Rating, Button> stgcol6 = (TableColumn<Rating, Button>) StGroups.getColumns().get(5);
+        stgcol6.setCellValueFactory(new PropertyValueFactory<>("editButton"));
 
         GroupChoice.setValue("Усi групи");
         GroupChoice2.setValue("Усi групи");
@@ -118,7 +145,7 @@ public class TableFormController implements Initializable {
         model.sortStudentByRating();
 
         ArrayList<Student> students;
-        if (GroupChoice.getValue().equals("Усi групи"))
+        if (GroupChoice.getValue() == null || GroupChoice.getValue().equals("Усi групи"))
             students = model.getStudents();
         else {
             Group group = model.getGroupByName(GroupChoice.getValue());
@@ -128,7 +155,7 @@ public class TableFormController implements Initializable {
         ObservableList<Rating> usersData = observableArrayList();
         for (int i = 1; i <= students.size(); ++i) {
             Student st = students.get(i - 1);
-            usersData.add(new Rating(st, model.getStudentRating(st), st.getAdditionalPoints(), model.getStudents().indexOf(st) + 1));
+            usersData.add(new Rating(st, model.getStudentRating(st), model.getStudents().indexOf(st) + 1));
         }
         RatingTable.setItems(usersData);
     }
@@ -508,9 +535,48 @@ public class TableFormController implements Initializable {
 
     //<Обновление элементов интерфейса>
 
+    private void refreshDistribution(){
+        ObservableList<SubjectDistribution> data = observableArrayList();
+        ArrayList<Learning> learnings = model.getLearnings();
+
+        for(Learning learn : learnings){
+            SubjectDistribution subdist = new SubjectDistribution(learn.getGroup().getName(), learn.getSubject().getName(), learn.getCoefficient());
+            Button deleteButton = subdist.getDelButton();
+            deleteButton.setOnMouseClicked((event)->{
+                System.out.println(subdist.toString());
+            });
+            data.add(subdist);
+        }
+
+        DistribTable.setItems(data);
+    }
+
+    private void refreshStGroup(){
+        ObservableList<Rating> data = observableArrayList();
+        ArrayList<Student> students = model.getStudents();
+
+        for(Student student : students){
+            Rating rating = new Rating(student);
+            Button deleteButton = rating.getDelButton();
+            deleteButton.setOnMouseClicked(event ->{
+
+            });
+
+            Button editButton = rating.getEditButton();
+            editButton.setOnMouseClicked(event ->{
+
+            });
+            data.add(rating);
+        }
+
+        StGroups.setItems(data);
+    }
+
     private void refreshTableViews() {
         setRatingGroup();
         setGroup();
+        refreshDistribution();
+        refreshStGroup();
     }
 
     private void refreshComboBoxes() {

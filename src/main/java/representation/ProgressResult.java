@@ -1,4 +1,4 @@
-package model.representation;
+package representation;
 
 import model.Student;
 

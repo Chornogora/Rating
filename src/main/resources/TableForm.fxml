@@ -57,14 +57,14 @@
            <content>
              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="298.0" prefWidth="571.0">
                   <children>
-                     <TableView layoutY="8.0" prefHeight="260.0" prefWidth="585.0">
+                     <TableView fx:id="StGroups" layoutY="8.0" prefHeight="260.0" prefWidth="585.0">
                        <columns>
-                         <TableColumn prefWidth="100.0" text="Id студента" />
+                         <TableColumn text="Id студента" />
                          <TableColumn prefWidth="170.0" text="ПIБ студента" />
                            <TableColumn prefWidth="100.0" text="Група" />
-                           <TableColumn prefWidth="130.0" text="Додатковi бали" />
-                           <TableColumn prefWidth="42.5" text="X" />
-                           <TableColumn prefWidth="42.5" text="E" />
+                           <TableColumn prefWidth="100.0" text="Додатковi бали" />
+                           <TableColumn prefWidth="66.5" text="X" />
+                           <TableColumn prefWidth="66.5" text="E" />
                        </columns>
                      </TableView>
                      <Pane disable="true" layoutX="2.0" layoutY="269.0" prefHeight="40.0" prefWidth="585.0">
@@ -90,12 +90,12 @@
            <content>
              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
-                     <TableView layoutY="8.0" prefHeight="200.0" prefWidth="585.0">
+                     <TableView fx:id="DistribTable" layoutY="8.0" prefHeight="200.0" prefWidth="585.0">
                        <columns>
-                         <TableColumn prefWidth="200.0" text="Група" />
+                         <TableColumn prefWidth="150.0" text="Група" />
                          <TableColumn prefWidth="200.0" text="Предмет" />
-                           <TableColumn prefWidth="123.0" text="Коефіцієнт" />
-                           <TableColumn prefWidth="60.0" text=" X" />
+                           <TableColumn prefWidth="105.0" text="Коефіцієнт" />
+                           <TableColumn prefWidth="110.0" text=" X" />
                        </columns>
                      </TableView>
                      <Separator layoutX="195.0" layoutY="220.0" orientation="VERTICAL" prefHeight="125.0" prefWidth="5.0" />
