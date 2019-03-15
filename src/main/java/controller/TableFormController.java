@@ -543,7 +543,21 @@ public class TableFormController implements Initializable {
             SubjectDistribution subdist = new SubjectDistribution(learn.getGroup().getName(), learn.getSubject().getName(), learn.getCoefficient());
             Button deleteButton = subdist.getDelButton();
             deleteButton.setOnMouseClicked((event)->{
-                System.out.println(subdist.toString());
+                if(!throwWarning("Весь прогрес студентів групи " + subdist.getGroupName() + ", пов'язаний з предметом " + subdist.getSubjectName() + " буде видалений. Продовити видалення?"))
+                    return;
+
+                //SMART удаление
+                List<Progress> garbage = model.getLearningProgresses(learn);
+                ProgressDao prdao = new ProgressDao();
+                for(Progress pr : garbage){
+                    model.getProgresses().remove(pr);
+                    prdao.delete(pr);
+                }
+                model.getLearnings().remove(learn);
+                new LearningDao().delete(learn);
+
+                refreshComboBoxes();
+                refreshTableViews();
             });
             data.add(subdist);
         }

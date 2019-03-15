@@ -139,8 +139,6 @@ public class Model {
         for(Progress pr : progresses)
             if(pr.getStudent().equals(st) && pr.getLearning().equals(ln))
                 return pr;
-        /*Progress progress = new Progress(st, ln);
-        progresses.add(progress);*/
         return null;
     }
 
@@ -153,6 +151,15 @@ public class Model {
                 return 1;
             else return 0;
         });
+    }
+
+    public List<Progress> getLearningProgresses(Learning learning){
+        List<Progress> lst = new ArrayList<>();
+        for(Progress pr : progresses){
+            if(pr.getLearning().equals(learning))
+                lst.add(pr);
+        }
+        return lst;
     }
 
     public ArrayList<Student> getStudents() {
