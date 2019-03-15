@@ -53,7 +53,7 @@
                </Pane>
                   </AnchorPane>
           </Tab>
-         <Tab text="Студенти і групи">
+         <Tab closable="false" text="Студенти і групи">
            <content>
              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="298.0" prefWidth="571.0">
                   <children>
@@ -75,18 +75,18 @@
                            <ComboBox layoutX="247.0" layoutY="7.0" prefHeight="26.0" prefWidth="138.0" promptText="Група" />
                         </children>
                      </Pane>
-                     <Pane layoutX="2.0" layoutY="315.0" prefHeight="40.0" prefWidth="585.0">
+                     <Pane fx:id="StudentAddPane" layoutX="2.0" layoutY="315.0" prefHeight="40.0" prefWidth="585.0">
                         <children>
-                           <Button layoutX="485.0" layoutY="7.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="Додати" />
-                           <TextField layoutY="7.0" prefHeight="26.0" prefWidth="236.0" promptText="ПIБ студента" />
-                           <TextField layoutX="396.0" layoutY="7.0" prefHeight="26.0" prefWidth="83.0" promptText="Д. Бали" />
-                           <ComboBox layoutX="247.0" layoutY="7.0" prefHeight="26.0" prefWidth="138.0" promptText="Група" />
+                           <Button fx:id="StudentAddButton" layoutX="485.0" layoutY="7.0" mnemonicParsing="false" onAction="#addStudent" prefHeight="26.0" prefWidth="90.0" text="Додати" />
+                           <TextField fx:id="StudentAddName" layoutY="7.0" prefHeight="26.0" prefWidth="236.0" promptText="ПIБ студента" />
+                           <TextField fx:id="StudentAddPoint" layoutX="396.0" layoutY="7.0" prefHeight="26.0" prefWidth="83.0" promptText="Д. Бали" />
+                           <ComboBox fx:id="StudentAddGroup" layoutX="247.0" layoutY="7.0" prefHeight="26.0" prefWidth="138.0" promptText="Група" />
                         </children></Pane>
                   </children>
                </AnchorPane>
            </content>
          </Tab>
-         <Tab text="Групи і предмети">
+         <Tab closable="false" text="Групи і предмети">
            <content>
              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
@@ -94,7 +94,8 @@
                        <columns>
                          <TableColumn prefWidth="200.0" text="Група" />
                          <TableColumn prefWidth="200.0" text="Предмет" />
-                           <TableColumn prefWidth="185.0" text="Коефіцієнт" />
+                           <TableColumn prefWidth="123.0" text="Коефіцієнт" />
+                           <TableColumn prefWidth="60.0" text=" X" />
                        </columns>
                      </TableView>
                      <Separator layoutX="195.0" layoutY="220.0" orientation="VERTICAL" prefHeight="125.0" prefWidth="5.0" />
@@ -109,23 +110,23 @@
                            <Button fx:id="GroupAdd" layoutX="105.0" layoutY="70.0" mnemonicParsing="false" onAction="#addGroup" prefHeight="26.0" prefWidth="87.0" text="Додати" />
                         </children>
                      </Pane>
-                     <Pane layoutX="198.0" layoutY="211.0" prefHeight="134.0" prefWidth="197.0">
+                     <Pane fx:id="SubjectPane" layoutX="198.0" layoutY="211.0" prefHeight="134.0" prefWidth="197.0">
                         <children>
-                           <Label layoutX="75.0" text="Предмети" />
-                           <ComboBox layoutX="5.0" layoutY="25.0" prefWidth="189.0" promptText="Обраний предмет" />
-                           <TextField layoutX="5.0" layoutY="70.0" prefWidth="95.0" promptText="Нова назва" />
-                           <Button layoutX="105.0" layoutY="70.0" mnemonicParsing="false" prefWidth="87.0" text="Додати" />
-                           <Button layoutX="5.0" layoutY="105.0" mnemonicParsing="false" prefWidth="95.0" text="Змiнити" />
-                           <Button layoutX="105.0" layoutY="105.0" mnemonicParsing="false" prefWidth="87.0" text="Видалити" />
+                           <Label layoutX="65.0" text="Предмети" />
+                           <ComboBox fx:id="SubjectBox" layoutX="5.0" layoutY="25.0" prefWidth="189.0" promptText="Обраний предмет" />
+                           <TextField fx:id="SubjectName" layoutX="5.0" layoutY="70.0" prefWidth="95.0" promptText="Нова назва" />
+                           <Button fx:id="addSubject" layoutX="105.0" layoutY="70.0" mnemonicParsing="false" onAction="#addSubject" prefWidth="87.0" text="Додати" />
+                           <Button fx:id="changeSubject" layoutX="5.0" layoutY="105.0" mnemonicParsing="false" onAction="#changeSubject" prefWidth="95.0" text="Змiнити" />
+                           <Button fx:id="deleteSubject" layoutX="105.0" layoutY="105.0" mnemonicParsing="false" onAction="#deleteSubject" prefWidth="87.0" text="Видалити" />
                         </children>
                      </Pane>
-                     <Pane layoutX="395.0" layoutY="206.0" prefHeight="153.0" prefWidth="196.0">
+                     <Pane fx:id="LearningPane" layoutX="395.0" layoutY="206.0" prefHeight="153.0" prefWidth="196.0">
                         <children>
                            <Label layoutX="60.0" layoutY="5.0" text="Коефіцієнти" />
-                           <ComboBox layoutX="5.0" layoutY="75.0" prefWidth="182.0" promptText="Обрана група" />
-                           <ComboBox layoutX="5.0" layoutY="30.0" prefWidth="182.0" promptText="Обраний предмет" />
-                           <TextField layoutX="5.0" layoutY="110.0" prefWidth="95.0" promptText="Коефіцієнт" />
-                           <Button layoutX="105.0" layoutY="110.0" mnemonicParsing="false" prefWidth="80.0" text="Змiнити" />
+                           <ComboBox fx:id="LearningGroupBox" layoutX="5.0" layoutY="75.0" prefWidth="182.0" promptText="Обрана група" />
+                           <ComboBox fx:id="LearningSubjectBox" layoutX="5.0" layoutY="30.0" prefWidth="182.0" promptText="Обраний предмет" />
+                           <TextField fx:id="CoefficientText" layoutX="5.0" layoutY="110.0" prefWidth="95.0" promptText="Коефіцієнт" />
+                           <Button fx:id="LearningButton" layoutX="105.0" layoutY="110.0" mnemonicParsing="false" onAction="#setCoefficient" prefWidth="80.0" text="Змiнити" />
                         </children>
                      </Pane>
                   </children></AnchorPane>

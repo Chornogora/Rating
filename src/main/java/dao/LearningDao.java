@@ -5,6 +5,7 @@ import model.Subject;
 import model.Learning;
 
 import java.sql.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class LearningDao extends Dao{
@@ -71,7 +72,12 @@ public class LearningDao extends Dao{
                     }
                 }
 
-                Learning learning = new Learning(subject, group, set.getFloat(4));
+                float coef;
+                String value = String.valueOf(set.getFloat(4));
+                DecimalFormat formatter = new DecimalFormat("#.##");
+                coef = Float.valueOf(formatter.format(Double.valueOf(value)));
+
+                Learning learning = new Learning(subject, group, coef);
                 learning.setId(set.getLong(1));
                 result.add(learning);
             }

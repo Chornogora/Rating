@@ -12,10 +12,8 @@ import model.representation.ProgressResult;
 import model.representation.Rating;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.text.DecimalFormat;
+import java.util.*;
 
 import static javafx.collections.FXCollections.*;
 
@@ -41,6 +39,15 @@ public class TableFormController implements Initializable {
 
     @FXML
     private Pane GroupPane;
+
+    @FXML
+    private Pane SubjectPane;
+
+    @FXML
+    private Pane LearningPane;
+
+    @FXML
+    private Pane StudentAddPane;
 
     private Model model;
 
@@ -71,8 +78,8 @@ public class TableFormController implements Initializable {
         model.sortStudentByRating();
 
         String[] names = model.getGroupNames();
-        String[] values = new String[names.length+1];
-        values[0]="Усi групи";
+        String[] values = new String[names.length + 1];
+        values[0] = "Усi групи";
         System.arraycopy(names, 0, values, 1, names.length);
         GroupChoice.setItems(observableArrayList(values));
         GroupChoice2.setItems(observableArrayList(values));
@@ -107,11 +114,11 @@ public class TableFormController implements Initializable {
     }
 
     @FXML
-    private void setRatingGroup(){
+    private void setRatingGroup() {
         model.sortStudentByRating();
 
         ArrayList<Student> students;
-        if(GroupChoice.getValue().equals("Усi групи"))
+        if (GroupChoice.getValue().equals("Усi групи"))
             students = model.getStudents();
         else {
             Group group = model.getGroupByName(GroupChoice.getValue());
@@ -119,21 +126,21 @@ public class TableFormController implements Initializable {
         }
 
         ObservableList<Rating> usersData = observableArrayList();
-        for(int i = 1; i <= students.size(); ++i){
-            Student st = students.get(i-1);
-            usersData.add(new Rating(st, model.getStudentRating(st), st.getAdditionalPoints(), model.getStudents().indexOf(st)+1));
+        for (int i = 1; i <= students.size(); ++i) {
+            Student st = students.get(i - 1);
+            usersData.add(new Rating(st, model.getStudentRating(st), st.getAdditionalPoints(), model.getStudents().indexOf(st) + 1));
         }
         RatingTable.setItems(usersData);
     }
 
     @FXML
-    private void setGroup(){
+    private void setGroup() {
         ObservableList<String> variants = observableArrayList();
         variants.add("Усi студенти");
         String value = GroupChoice2.getValue();
-        if(value.equals("Усi групи")){
+        if (value == null || value.equals("Усi групи")) {
             variants.addAll(model.getStudentNames());
-        }else{
+        } else {
             variants.addAll(model.getGroupByName(GroupChoice2.getValue()).getStudentNames());
         }
         StudentChoice.setItems(variants);
@@ -142,28 +149,28 @@ public class TableFormController implements Initializable {
     }
 
     @FXML
-    private void setStudentChoice(){
+    private void setStudentChoice() {
         model.sortStudentByRating();
 
         ArrayList<Student> students;
         String gc2value = GroupChoice2.getValue();
-        if(gc2value.equals("Усi групи"))
+        if (gc2value == null || gc2value.equals("Усi групи"))
             students = model.getStudents();
         else {
             Group group = model.getGroupByName(GroupChoice2.getValue());
             students = group.getStudents();
         }
-        if(!StudentChoice.getValue().equals("Усi студенти")){
+        if (StudentChoice.getValue() != null && !StudentChoice.getValue().equals("Усi студенти")) {
             students = new ArrayList<Student>();
             students.add(model.getStudentByName(StudentChoice.getValue()));
         }
 
         ObservableList<ProgressResult> usersData = observableArrayList();
-        for(int i = 1; i <= students.size(); ++i){
-            Student st = students.get(i-1);
+        for (int i = 1; i <= students.size(); ++i) {
+            Student st = students.get(i - 1);
             ArrayList<Progress> stpr = model.getStudentProgresses(st);
-            for(Progress pr : stpr)
-            usersData.add(new ProgressResult(st, pr.getLearning().getSubject().getName(), pr.getProgressPoints()));
+            for (Progress pr : stpr)
+                usersData.add(new ProgressResult(st, pr.getLearning().getSubject().getName(), pr.getProgressPoints()));
         }
         SSTable.setItems(usersData);
     }
@@ -171,7 +178,7 @@ public class TableFormController implements Initializable {
     //<Установка предметного балла>
 
     @FXML
-    private void SubjectChoiceEnable(){
+    private void SubjectChoiceEnable() {
         TextField points = (TextField) SubPointsPane.lookup("#SubPointsPoint");
         Button button = (Button) SubPointsPane.lookup("#SubPointsButton");
         points.setDisable(true);
@@ -187,14 +194,14 @@ public class TableFormController implements Initializable {
         ObservableList<String> variants = observableArrayList();
         List<Subject> list = model.getStudentsSubjects(model.getStudentByName(box.getValue()));
 
-        for(Subject sub : list){
+        for (Subject sub : list) {
             variants.add(sub.getName());
         }
         subject.setItems(variants);
     }
 
     @FXML
-    private void PointsChoiceEnable(){
+    private void PointsChoiceEnable() {
         TextField points = (TextField) SubPointsPane.lookup("#SubPointsPoint");
         Button button = (Button) SubPointsPane.lookup("#SubPointsButton");
         points.setDisable(false);
@@ -202,7 +209,7 @@ public class TableFormController implements Initializable {
     }
 
     @FXML
-    private void setSubjectPoints(){
+    private void setSubjectPoints() {
         ComboBox box = (ComboBox) SubPointsPane.lookup("#SubPointsStudent");
         ComboBox subject = (ComboBox) SubPointsPane.lookup("#SubPointsSubject");
         TextField points = (TextField) SubPointsPane.lookup("#SubPointsPoint");
@@ -210,15 +217,15 @@ public class TableFormController implements Initializable {
         int point;
         try {
             point = Integer.valueOf(points.getText());
-            if(point < 0 || point > 100)
+            if (point < 0 || point > 100)
                 throw new Exception("Неверный формат данных");
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throwError("Невірно введений бал!");
             return;
         }
 
-        String studentName = (String) box.getValue(), subjectName = (String)subject.getValue();
+        String studentName = (String) box.getValue(), subjectName = (String) subject.getValue();
         Progress progress = model.getProgressByData(model.getStudentByName(studentName), model.getSubjectByName(subjectName));
         progress.setProgressPoints(point);
         new ProgressDao().update(progress);
@@ -229,24 +236,24 @@ public class TableFormController implements Initializable {
 
     //<Работа с группами>
 
-    private String getNewGroupName(){
-        TextField groupName = (TextField)GroupPane.lookup("#GroupName");
+    private String getNewGroupName() {
+        TextField groupName = (TextField) GroupPane.lookup("#GroupName");
         return groupName.getText();
     }
 
-    private String getSelectedGroupName(){
-        ComboBox<String> groupBox = (ComboBox<String>)GroupPane.lookup("#GroupBox");
+    private String getSelectedGroupName() {
+        ComboBox<String> groupBox = (ComboBox<String>) GroupPane.lookup("#GroupBox");
         return groupBox.getValue();
     }
 
     @FXML
-    private void addGroup(){
+    private void addGroup() {
         String newGroupName = getNewGroupName();
 
-        if(model.getGroupByName(newGroupName) != null){
+        if (model.getGroupByName(newGroupName) != null) {
             throwError("Назва групи не є унікальною!");
             return;
-        }else if(newGroupName.trim().equals("")){
+        } else if (newGroupName.trim().equals("")) {
             throwError("Неправильна назва групи!");
             return;
         }
@@ -260,16 +267,16 @@ public class TableFormController implements Initializable {
     }
 
     @FXML
-    private void changeGroup(){
+    private void changeGroup() {
 
         Group group = model.getGroupByName(getSelectedGroupName());
-        if(group == null){
+        if (group == null) {
             throwError("Не обрана група для змiни назви!");
         }
 
         String newGroupName = getNewGroupName();
 
-        if(model.getGroupByName(newGroupName) != null){
+        if (model.getGroupByName(newGroupName) != null) {
             throwError("Назва групи не є унікальною!");
             return;
         }
@@ -282,14 +289,14 @@ public class TableFormController implements Initializable {
     }
 
     @FXML
-    private void deleteGroup(){
+    private void deleteGroup() {
         Group group = model.getGroupByName(getSelectedGroupName());
-        if(group == null){
+        if (group == null) {
             throwError("Не обрана група для видалення!");
             return;
         }
 
-        if(throwWarning("Ця дія призведе до втрати даних про студентів цієї групи. Ви впевнені, що хочете продовжити?")){
+        if (throwWarning("Ця дія призведе до втрати даних про студентів цієї групи. Ви впевнені, що хочете продовжити?")) {
 
             model.getGroups().remove(group);
             new GroupDao().delete(group);
@@ -301,20 +308,179 @@ public class TableFormController implements Initializable {
 
     //</Работа с группами>
 
+    //<Работа с предметами>
+
+    private String getNewSubjectName() {
+        TextField subjectName = (TextField) SubjectPane.lookup("#SubjectName");
+        return subjectName.getText();
+    }
+
+    private String getSelectedSubjectName() {
+        ComboBox<String> subjectBox = (ComboBox<String>) SubjectPane.lookup("#SubjectBox");
+        return subjectBox.getValue();
+    }
+
+    @FXML
+    private void addSubject() {
+        String newSubjectName = getNewSubjectName();
+
+        if (model.getSubjectByName(newSubjectName) != null) {
+            throwError("Назва предмета не є унікальною!");
+            return;
+        } else if (newSubjectName.trim().equals("")) {
+            throwError("Неправильна назва предмета!");
+            return;
+        }
+
+        Subject subject = new Subject(newSubjectName);
+        model.getSubjects().add(subject);
+        new SubjectDao().insert(subject);
+
+        refreshComboBoxes();
+        refreshTableViews();
+    }
+
+    @FXML
+    private void changeSubject() {
+        Subject subject = model.getSubjectByName(getSelectedSubjectName());
+        if (subject == null) {
+            throwError("Не обраний предмет для змiни назви!");
+        }
+
+        String newSubjectName = getNewSubjectName();
+
+        if (model.getSubjectByName(newSubjectName) != null) {
+            throwError("Назва предмета не є унікальною!");
+            return;
+        }
+
+        subject.setName(newSubjectName);
+        new SubjectDao().update(subject);
+
+        refreshComboBoxes();
+        refreshTableViews();
+    }
+
+    @FXML
+    private void deleteSubject() {
+        Subject subject = model.getSubjectByName(getSelectedSubjectName());
+        if (subject == null) {
+            throwError("Не обрана група для видалення!");
+            return;
+        }
+
+        if (throwWarning("Ця дія призведе до втрати даних про студентів цієї групи. Ви впевнені, що хочете продовжити?")) {
+
+            model.getSubjects().remove(subject);
+            new SubjectDao().delete(subject);
+
+            refreshComboBoxes();
+            refreshTableViews();
+        }
+    }
+
+    //</Работа с предметами>
+
+    //<Работа с преподаванием предметов (Learning)>
+
+    @FXML
+    private void setCoefficient() {
+        ComboBox<String> learningSub = (ComboBox<String>) LearningPane.lookup("#LearningSubjectBox");
+        ComboBox<String> learningGroup = (ComboBox<String>) LearningPane.lookup("#LearningGroupBox");
+        TextField coefText = (TextField) LearningPane.lookup("#CoefficientText");
+
+        if (learningSub.getValue() == null) {
+            throwError("Предмет не був обраний");
+            return;
+        } else if (learningGroup.getValue() == null) {
+            throwError("Група не була обрана");
+            return;
+        }
+
+        float coef;
+
+        try {
+            String value = coefText.getText();
+            DecimalFormat formatter = new DecimalFormat("#.##");
+            coef = Float.valueOf(formatter.format(Double.valueOf(value)));
+        } catch (Exception e) {
+            throwError("Коефіцієнт введений неправильно!");
+            return;
+        }
+
+        Learning learning = new Learning(model.getSubjectByName(learningSub.getValue()), model.getGroupByName(learningGroup.getValue()), coef);
+
+        if (model.getLearnings().contains(learning)) {
+            learning = model.getLearnings().get(model.getLearnings().indexOf(learning));
+            learning.setCoefficient(coef);
+            new LearningDao().update(learning);
+        } else if (throwWarning("Додати предмет " + learningSub.getValue() + " до групи " + learningGroup.getValue() + "?")) {
+            model.getLearnings().add(learning);
+            new LearningDao().insert(learning);
+        } else {
+            return;
+        }
+
+        refreshComboBoxes();
+        refreshTableViews();
+    }
+
+    //</Работа с преподаванием предметов (Learning)>
+
+    //<Работа со студентами>
+
+    @FXML
+    private void addStudent() {
+        TextField stName = (TextField) StudentAddPane.lookup("#StudentAddName");
+        ComboBox<String> StudentAddGroup = (ComboBox<String>) StudentAddPane.lookup("#StudentAddGroup");
+        TextField stPoint = (TextField) StudentAddPane.lookup("#StudentAddPoint");
+
+        if (stName.getText() == null) {
+            throwError("Ім'я студента не введено");
+            return;
+        } else if (StudentAddGroup.getValue() == null) {
+            throwError("Група студента не обрана");
+        }
+
+        float additionalPoints;
+
+        if (stPoint.getText() == null) {
+            stPoint.setText("0");
+        }
+
+        String value = stPoint.getText();
+        DecimalFormat formatter = new DecimalFormat("#.##");
+        additionalPoints = Float.valueOf(formatter.format(Double.valueOf(value)));
+
+
+        Student student = new Student(model.getGroupByName(StudentAddGroup.getValue()), stName.getText(), additionalPoints);
+        model.getStudents().add(student);
+        student.getGroup().addStudent(student);
+
+        new StudentDao().insert(student);
+
+        refreshComboBoxes();
+        refreshTableViews();
+    }
+
+    //</Работа со студентами>
+
     //<Ошибки и предупреждения>
 
-    private void throwError(String text){
+    private void throwError(String text) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Помилка");
         alert.setHeaderText("Помилка в роботi програми");
         alert.setContentText(text);
+        alert.setResizable(true);
         alert.showAndWait();
     }
 
-    private boolean throwWarning(String text){
+    private boolean throwWarning(String text) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Попередження");
         alert.setContentText(text);
+        alert.setResizable(true);
         Optional<ButtonType> result = alert.showAndWait();
 
         return result.get() == ButtonType.OK;
@@ -324,26 +490,49 @@ public class TableFormController implements Initializable {
 
     //<Обновление элементов интерфейса>
 
-    private void refreshTableViews(){
+    private void refreshTableViews() {
         setRatingGroup();
         setGroup();
     }
 
-    private void refreshComboBoxes(){
-        GroupChoice.setItems(observableArrayList(model.getGroupNames()));
+    private void refreshComboBoxes() {
+        String[] groupNames = model.getGroupNames();
+
+        ArrayList<String> special = new ArrayList<>();
+        special.add("Усi групи");
+        special.addAll(Arrays.asList(groupNames));
+
+        GroupChoice.setItems(observableArrayList(special));
         GroupChoice.setValue("Усi групи");
 
-        GroupChoice2.setItems(observableArrayList(model.getGroupNames()));
+        GroupChoice2.setItems(observableArrayList(special));
         GroupChoice2.setValue("Усi групи");
 
-        StudentChoice.setItems(observableArrayList(model.getStudentNames()));
+        special = new ArrayList<>();
+        special.add("Усi студенти");
+        special.addAll(Arrays.asList(model.getStudentNames()));
+
+        StudentChoice.setItems(observableArrayList(special));
         StudentChoice.setValue("Усi студенти");
+
 
         ComboBox<String> box = (ComboBox<String>) SubPointsPane.lookup("#SubPointsStudent");
         box.setItems(observableArrayList(model.getStudentNames()));
 
         ComboBox<String> groupbox = (ComboBox<String>) GroupPane.lookup("#GroupBox");
-        groupbox.setItems(observableArrayList(model.getGroupNames()));
+        groupbox.setItems(observableArrayList(groupNames));
+
+        ComboBox<String> subjectBox = (ComboBox<String>) SubjectPane.lookup("#SubjectBox");
+        subjectBox.setItems(observableArrayList(model.getSubjectNames()));
+
+        ComboBox<String> learningSub = (ComboBox<String>) LearningPane.lookup("#LearningSubjectBox");
+        learningSub.setItems(observableArrayList(model.getSubjectNames()));
+
+        ComboBox<String> learningGroup = (ComboBox<String>) LearningPane.lookup("#LearningGroupBox");
+        learningGroup.setItems(observableArrayList(groupNames));
+
+        ComboBox<String> StudentAddGroup = (ComboBox<String>) StudentAddPane.lookup("#StudentAddGroup");
+        StudentAddGroup.setItems(observableArrayList(groupNames));
     }
 
     //</Обновление элементов интерфейса>

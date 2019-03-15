@@ -105,6 +105,14 @@ public class Model {
         return names;
     }
 
+    public String[] getSubjectNames(){
+        String[] names = new String[subjects.size()];
+        for(int i = 0; i < subjects.size(); ++i){
+            names[i] = subjects.get(i).getName();
+        }
+        return names;
+    }
+
     public Student getStudentByName(String name){
         for(Student st : students)
             if(st.getName().equals(name))
@@ -153,5 +161,13 @@ public class Model {
 
     public ArrayList<Group> getGroups(){
         return groups;
+    }
+
+    public ArrayList<Subject> getSubjects(){
+        return subjects;
+    }
+
+    public ArrayList<Learning> getLearnings(){
+        return  learnings;
     }
 }

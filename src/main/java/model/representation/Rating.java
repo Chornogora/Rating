@@ -45,4 +45,8 @@ public class Rating {
     public float getPoints() {
         return points;
     }
+
+    public float getAdditionalPoints() {
+        return additionalPoints;
+    }
 }

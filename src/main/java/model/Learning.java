@@ -38,7 +38,13 @@ public class Learning extends ModelObject{
         return coefficient;
     }
 
-    public void setCoefficient(int coefficient) {
+    public void setCoefficient(float coefficient) {
         this.coefficient = coefficient;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        Learning ln = (Learning) o;
+        return this.group.equals(ln.group) && this.subject.equals(ln.subject);
     }
 }
