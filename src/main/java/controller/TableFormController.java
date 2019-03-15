@@ -54,7 +54,14 @@ public class TableFormController implements Initializable {
     @FXML
     private Pane StudentAddPane;
 
+    @FXML
+    private Pane editStudentPane;
+
     private Model model;
+
+    private boolean isStudentEditing = false;
+
+    private Student changingStudent;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -136,8 +143,7 @@ public class TableFormController implements Initializable {
         GroupChoice2.setValue("Усi групи");
         StudentChoice.setValue("Усi студенти");
 
-        refreshComboBoxes();
-        refreshTableViews();
+        refreshData();
     }
 
     @FXML
@@ -188,7 +194,7 @@ public class TableFormController implements Initializable {
             students = group.getStudents();
         }
         if (StudentChoice.getValue() != null && !StudentChoice.getValue().equals("Усi студенти")) {
-            students = new ArrayList<Student>();
+            students = new ArrayList<>();
             students.add(model.getStudentByName(StudentChoice.getValue()));
         }
 
@@ -289,8 +295,7 @@ public class TableFormController implements Initializable {
         model.getGroups().add(group);
         new GroupDao().insert(group);
 
-        refreshComboBoxes();
-        refreshTableViews();
+        refreshData();
     }
 
     @FXML
@@ -311,8 +316,7 @@ public class TableFormController implements Initializable {
         group.setName(newGroupName);
         new GroupDao().update(group);
 
-        refreshComboBoxes();
-        refreshTableViews();
+        refreshData();
     }
 
     @FXML
@@ -324,12 +328,8 @@ public class TableFormController implements Initializable {
         }
 
         if (throwWarning("Ця дія призведе до втрати даних про студентів цієї групи. Ви впевнені, що хочете продовжити?")) {
-
-            model.getGroups().remove(group);
-            new GroupDao().delete(group);
-
-            refreshComboBoxes();
-            refreshTableViews();
+            removeGroup(group);
+            refreshData();
         }
     }
 
@@ -363,8 +363,7 @@ public class TableFormController implements Initializable {
         model.getSubjects().add(subject);
         new SubjectDao().insert(subject);
 
-        refreshComboBoxes();
-        refreshTableViews();
+        refreshData();
     }
 
     @FXML
@@ -384,8 +383,7 @@ public class TableFormController implements Initializable {
         subject.setName(newSubjectName);
         new SubjectDao().update(subject);
 
-        refreshComboBoxes();
-        refreshTableViews();
+        refreshData();
     }
 
     @FXML
@@ -396,13 +394,9 @@ public class TableFormController implements Initializable {
             return;
         }
 
-        if (throwWarning("Ця дія призведе до втрати даних про студентів цієї групи. Ви впевнені, що хочете продовжити?")) {
-
-            model.getSubjects().remove(subject);
-            new SubjectDao().delete(subject);
-
-            refreshComboBoxes();
-            refreshTableViews();
+        if (throwWarning("Ця дія призведе до втрати даних про вивчення цієї дисципліни. Ви впевнені, що хочете продовжити?")) {
+            removeSubject(subject);
+            refreshData();
         }
     }
 
@@ -430,6 +424,8 @@ public class TableFormController implements Initializable {
             String value = coefText.getText();
             DecimalFormat formatter = new DecimalFormat("#.##");
             coef = Float.valueOf(formatter.format(Double.valueOf(value)));
+            if(coef < 0)
+                throw new Exception();
         } catch (Exception e) {
             throwError("Коефіцієнт введений неправильно!");
             return;
@@ -457,8 +453,7 @@ public class TableFormController implements Initializable {
             return;
         }
 
-        refreshComboBoxes();
-        refreshTableViews();
+        refreshData();
     }
 
     //</Работа с преподаванием предметов (Learning)>
@@ -484,10 +479,17 @@ public class TableFormController implements Initializable {
             stPoint.setText("0");
         }
 
-        String value = stPoint.getText();
-        DecimalFormat formatter = new DecimalFormat("#.##");
-        additionalPoints = Float.valueOf(formatter.format(Double.valueOf(value)));
+        try {
+            String value = stPoint.getText();
+            DecimalFormat formatter = new DecimalFormat("#.##");
+            additionalPoints = Float.valueOf(formatter.format(Double.valueOf(value)));
 
+            if(additionalPoints > 10 || additionalPoints < 0)
+                throw new Exception();
+        }catch(Exception e){
+            throwError("Додатковi бали введенi неправильно!");
+            return;
+        }
 
         Student student = new Student(model.getGroupByName(StudentAddGroup.getValue()), stName.getText(), additionalPoints);
         model.getStudents().add(student);
@@ -504,10 +506,39 @@ public class TableFormController implements Initializable {
             prdao.insert(pr);
         }
 
-        refreshComboBoxes();
-        refreshTableViews();
+        refreshData();
     }
 
+    @FXML
+    private void editStudent(){
+        TextField newName = (TextField) editStudentPane.lookup("#newStudentName");
+        ComboBox<String> newGroup = (ComboBox<String>) editStudentPane.lookup("#newStudentGroup");
+        TextField newPoints = (TextField) editStudentPane.lookup("#newStudentPoint");
+
+        if(newName.getText() == null || newName.getText().trim().equals("")){
+            throwError("Ім'я студента не введено");
+            return;
+        }
+
+        float points;
+
+        try{
+            String value = newPoints.getText();
+            points = Float.valueOf(new DecimalFormat("#.##").format(Double.valueOf(value)));
+            if(points > 10 || points < 0)
+                throw new Exception();
+        }catch(Exception e){
+            throwError("Додатковi бали введенi неправильно!");
+            return;
+        }
+
+        changingStudent.setName(newName.getText());
+        changingStudent.setGroup(model.getGroupByName(newGroup.getValue()));
+        changingStudent.setAdditionalPoints(points);
+
+        new StudentDao().update(changingStudent);
+        refreshData();
+    }
     //</Работа со студентами>
 
     //<Ошибки и предупреждения>
@@ -517,6 +548,7 @@ public class TableFormController implements Initializable {
         alert.setTitle("Помилка");
         alert.setHeaderText("Помилка в роботi програми");
         alert.setContentText(text);
+        alert.setHeight(800);
         alert.setResizable(true);
         alert.showAndWait();
     }
@@ -524,10 +556,12 @@ public class TableFormController implements Initializable {
     private boolean throwWarning(String text) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Попередження");
+        alert.setHeaderText("Підтвердіть свою дію");
         alert.setContentText(text);
         alert.setResizable(true);
-        Optional<ButtonType> result = alert.showAndWait();
+        alert.setHeight(800);
 
+        Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
     }
 
@@ -546,18 +580,8 @@ public class TableFormController implements Initializable {
                 if(!throwWarning("Весь прогрес студентів групи " + subdist.getGroupName() + ", пов'язаний з предметом " + subdist.getSubjectName() + " буде видалений. Продовити видалення?"))
                     return;
 
-                //SMART удаление
-                List<Progress> garbage = model.getLearningProgresses(learn);
-                ProgressDao prdao = new ProgressDao();
-                for(Progress pr : garbage){
-                    model.getProgresses().remove(pr);
-                    prdao.delete(pr);
-                }
-                model.getLearnings().remove(learn);
-                new LearningDao().delete(learn);
-
-                refreshComboBoxes();
-                refreshTableViews();
+                deleteLearning(learn);
+                refreshData();
             });
             data.add(subdist);
         }
@@ -572,13 +596,45 @@ public class TableFormController implements Initializable {
         for(Student student : students){
             Rating rating = new Rating(student);
             Button deleteButton = rating.getDelButton();
-            deleteButton.setOnMouseClicked(event ->{
 
+            //SMART удаление
+            deleteButton.setOnMouseClicked(event ->{
+                if(!throwWarning("Весь прогрес студента " + rating.getStudentName() + " буде видалений. Продовити видалення?"))
+                    return;
+                deleteStudent(student);
+
+                refreshData();
             });
 
             Button editButton = rating.getEditButton();
             editButton.setOnMouseClicked(event ->{
+                if(!rating.isEditing() && changingStudent == null){
+                    rating.setEditing(true);
+                    isStudentEditing = true;
+                    editStudentPane.setDisable(false);
 
+                    TextField newName = (TextField) editStudentPane.lookup("#newStudentName");
+                    newName.setText(rating.getStudentName());
+                    ComboBox<String> newGroup = (ComboBox<String>) editStudentPane.lookup("#newStudentGroup");
+                    newGroup.setValue(rating.getGroupName());
+                    TextField newPoints = (TextField) editStudentPane.lookup("#newStudentPoint");
+                    newPoints.setText(String.valueOf(rating.getAdditionalPoints()));
+
+                    for(Rating r : data){
+                        if(!r.equals(rating))
+                            r.getEditButton().setDisable(true);
+                    }
+                    changingStudent = student;
+
+                }else if(rating.isEditing()) {
+                    rating.setEditing(false);
+                    isStudentEditing = false;
+                    editStudentPane.setDisable(true);
+                    for (Rating r : data) {
+                        r.getEditButton().setDisable(false);
+                    }
+                    changingStudent = null;
+                }
             });
             data.add(rating);
         }
@@ -631,7 +687,61 @@ public class TableFormController implements Initializable {
 
         ComboBox<String> StudentAddGroup = (ComboBox<String>) StudentAddPane.lookup("#StudentAddGroup");
         StudentAddGroup.setItems(observableArrayList(groupNames));
+
+        ComboBox<String> newStudentGroup = (ComboBox<String>) editStudentPane.lookup("#newStudentGroup");
+        newStudentGroup.setItems(observableArrayList(groupNames));
     }
 
+    private void refreshData(){
+        refreshComboBoxes();
+        refreshTableViews();
+        changingStudent = null;
+        editStudentPane.setDisable(true);
+    }
     //</Обновление элементов интерфейса>
+
+    //<SMART удаление>
+
+    private void deleteLearning(Learning learn){
+        List<Progress> garbage = model.getLearningProgresses(learn);
+        ProgressDao prdao = new ProgressDao();
+        for(Progress pr : garbage){
+            model.getProgresses().remove(pr);
+            prdao.delete(pr);
+        }
+        model.getLearnings().remove(learn);
+        new LearningDao().delete(learn);
+
+    }
+
+    private void deleteStudent(Student student){
+        List<Progress> garbage = model.getStudentProgresses(student);
+        ProgressDao prdao = new ProgressDao();
+        for(Progress pr : garbage){
+            model.getProgresses().remove(pr);
+            prdao.delete(pr);
+        }
+        model.getStudents().remove(student);
+        new StudentDao().delete(student);
+    }
+
+    private void removeSubject(Subject subject){
+        List<Learning> lst = model.getSubjectLearnings(subject);
+        for(Learning learn : lst)
+            deleteLearning(learn);
+
+        model.getSubjects().remove(subject);
+        new SubjectDao().delete(subject);
+    }
+
+    private void removeGroup(Group group){
+        for(Student st : group.getStudents())
+            deleteStudent(st);
+        for(Learning ln : model.getGroupLearnings(group))
+            deleteLearning(ln);
+
+        model.getGroups().remove(group);
+        new GroupDao().delete(group);
+    }
+    //</SMART удаление>
 }

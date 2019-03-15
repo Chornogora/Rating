@@ -162,6 +162,25 @@ public class Model {
         return lst;
     }
 
+    public List<Learning> getSubjectLearnings(Subject subject){
+        List<Learning> lst = new ArrayList<>();
+        for(Learning ln : learnings){
+            if(ln.getSubject().equals(subject))
+                lst.add(ln);
+        }
+        return lst;
+    }
+
+    public List<Learning> getGroupLearnings(Group gr){
+        List<Learning> lst= new ArrayList<>();
+        for(Learning ln : learnings){
+            if(ln.getGroup().equals(gr)){
+                lst.add(ln);
+            }
+        }
+        return lst;
+    }
+
     public ArrayList<Student> getStudents() {
         return students;
     }

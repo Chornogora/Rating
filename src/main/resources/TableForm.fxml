@@ -67,12 +67,12 @@
                            <TableColumn prefWidth="66.5" text="E" />
                        </columns>
                      </TableView>
-                     <Pane disable="true" layoutX="2.0" layoutY="269.0" prefHeight="40.0" prefWidth="585.0">
+                     <Pane fx:id="editStudentPane" disable="true" layoutX="2.0" layoutY="269.0" prefHeight="40.0" prefWidth="585.0">
                         <children>
-                           <Button layoutX="485.0" layoutY="7.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="Змiнити" />
-                           <TextField layoutY="7.0" prefHeight="26.0" prefWidth="236.0" promptText="ПIБ студента" />
-                           <TextField layoutX="395.0" layoutY="7.0" prefHeight="26.0" prefWidth="83.0" promptText="Д. Бали" />
-                           <ComboBox layoutX="247.0" layoutY="7.0" prefHeight="26.0" prefWidth="138.0" promptText="Група" />
+                           <Button fx:id="newStudentButton" layoutX="485.0" layoutY="7.0" mnemonicParsing="false" onAction="#editStudent" prefHeight="26.0" prefWidth="90.0" text="Змiнити" />
+                           <TextField fx:id="newStudentName" layoutY="7.0" prefHeight="26.0" prefWidth="236.0" promptText="ПIБ студента" />
+                           <TextField fx:id="newStudentPoint" layoutX="395.0" layoutY="7.0" prefHeight="26.0" prefWidth="83.0" promptText="Д. Бали" />
+                           <ComboBox fx:id="newStudentGroup" layoutX="247.0" layoutY="7.0" prefHeight="26.0" prefWidth="138.0" promptText="Група" />
                         </children>
                      </Pane>
                      <Pane fx:id="StudentAddPane" layoutX="2.0" layoutY="315.0" prefHeight="40.0" prefWidth="585.0">
