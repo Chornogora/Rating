@@ -8,7 +8,7 @@ import java.sql.*;
 public abstract class Dao {
     protected static final String connectionURL = "jdbc:postgresql://localhost:5432/rating";
     protected static final String userName = "postgres";
-    protected static final String password = "";
+    protected static final String password = "root";
 
     protected final String tableName;
     protected final String idFieldName;

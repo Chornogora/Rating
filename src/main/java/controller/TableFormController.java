@@ -471,6 +471,7 @@ public class TableFormController implements Initializable {
             return;
         } else if (StudentAddGroup.getValue() == null) {
             throwError("Група студента не обрана");
+            return;
         }
 
         float additionalPoints;

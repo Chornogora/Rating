@@ -11,12 +11,12 @@
             <Font size="28.0" />
          </font>
       </Label>
-      <Button layoutX="147.0" layoutY="154.0" mnemonicParsing="false" text="База даних студентiв" fx:id="TableButton">
+      <Button fx:id="TableButton" layoutX="147.0" layoutY="154.0" mnemonicParsing="false" prefWidth="320.0" text="База даних студентiв">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
-      <Button layoutX="147.0" layoutY="232.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="306.0" text="Про програму" fx:id="AuthorButton">
+      <Button fx:id="AuthorButton" layoutX="147.0" layoutY="232.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="320.0" text="Про програму">
          <font>
             <Font size="24.0" />
          </font>

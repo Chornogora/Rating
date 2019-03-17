@@ -14,7 +14,7 @@
       <ObjectId>16485</ObjectId>
       <StateNumber>874</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>901</IntrospectionStateNumber>
+      <IntrospectionStateNumber>1025</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
     </database>
@@ -117,7 +117,7 @@
       <Comment>standard public schema</Comment>
       <StateNumber>359</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>902</IntrospectionStateNumber>
+      <IntrospectionStateNumber>1026</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
@@ -178,59 +178,59 @@
       <SchemaId>11</SchemaId>
     </extension>
     <table id="29" parent="21" name="groups">
-      <ObjectId>16486</ObjectId>
+      <ObjectId>16550</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>885</StateNumber>
+      <StateNumber>1022</StateNumber>
     </table>
     <table id="30" parent="21" name="learning">
-      <ObjectId>16498</ObjectId>
+      <ObjectId>16562</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>897</StateNumber>
+      <StateNumber>1022</StateNumber>
     </table>
     <table id="31" parent="21" name="progress">
-      <ObjectId>16524</ObjectId>
+      <ObjectId>16589</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>891</StateNumber>
+      <StateNumber>1024</StateNumber>
     </table>
     <table id="32" parent="21" name="students">
-      <ObjectId>16513</ObjectId>
+      <ObjectId>16578</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>894</StateNumber>
+      <StateNumber>1023</StateNumber>
     </table>
     <table id="33" parent="21" name="subjects">
-      <ObjectId>16492</ObjectId>
+      <ObjectId>16556</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>885</StateNumber>
+      <StateNumber>1022</StateNumber>
     </table>
     <column id="34" parent="29" name="group_id">
       <Position>1</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>877</StateNumber>
+      <StateNumber>1018</StateNumber>
       <TypeId>20</TypeId>
     </column>
     <column id="35" parent="29" name="group_name">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>877</StateNumber>
+      <StateNumber>1018</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <index id="36" parent="29" name="groups_pk">
-      <ObjectId>16489</ObjectId>
-      <StateNumber>877</StateNumber>
+      <ObjectId>16553</ObjectId>
+      <StateNumber>1018</StateNumber>
       <ColNames>group_id</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="37" parent="29" name="groups_group_name_uindex">
-      <ObjectId>16491</ObjectId>
-      <StateNumber>878</StateNumber>
+      <ObjectId>16555</ObjectId>
+      <StateNumber>1019</StateNumber>
       <ColNames>group_name</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="38" parent="29" name="groups_pk">
-      <ObjectId>16490</ObjectId>
-      <StateNumber>877</StateNumber>
+      <ObjectId>16554</ObjectId>
+      <StateNumber>1018</StateNumber>
       <ColNames>group_id</ColNames>
       <UnderlyingIndexName>groups_pk</UnderlyingIndexName>
       <Primary>1</Primary>
@@ -239,59 +239,59 @@
       <Position>1</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>885</StateNumber>
+      <StateNumber>1022</StateNumber>
       <TypeId>20</TypeId>
     </column>
     <column id="40" parent="30" name="group_id">
       <Position>2</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>885</StateNumber>
+      <StateNumber>1022</StateNumber>
       <TypeId>20</TypeId>
     </column>
     <column id="41" parent="30" name="subject_id">
       <Position>3</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>885</StateNumber>
+      <StateNumber>1022</StateNumber>
       <TypeId>20</TypeId>
     </column>
     <column id="42" parent="30" name="learning_coefficient">
       <Position>4</Position>
       <DataType>double precision|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>900</StateNumber>
+      <StateNumber>1022</StateNumber>
       <DefaultExpression>0</DefaultExpression>
       <TypeId>701</TypeId>
     </column>
     <index id="43" parent="30" name="learning_pk">
-      <ObjectId>16501</ObjectId>
-      <StateNumber>897</StateNumber>
+      <ObjectId>16566</ObjectId>
+      <StateNumber>1022</StateNumber>
       <ColNames>learning_id</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="44" parent="30" name="learning_pk">
-      <ObjectId>16502</ObjectId>
-      <StateNumber>885</StateNumber>
+      <ObjectId>16567</ObjectId>
+      <StateNumber>1022</StateNumber>
       <ColNames>learning_id</ColNames>
       <UnderlyingIndexName>learning_pk</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
     <foreign-key id="45" parent="30" name="group___fk">
-      <ObjectId>16503</ObjectId>
-      <StateNumber>885</StateNumber>
+      <ObjectId>16568</ObjectId>
+      <StateNumber>1022</StateNumber>
       <ColNames>group_id</ColNames>
-      <RefTableId>16486</RefTableId>
+      <RefTableId>16550</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>groups</RefTableName>
       <RefKeyName>groups_pk</RefKeyName>
       <RefColNames>group_id</RefColNames>
     </foreign-key>
     <foreign-key id="46" parent="30" name="subject___fk">
-      <ObjectId>16508</ObjectId>
-      <StateNumber>885</StateNumber>
+      <ObjectId>16573</ObjectId>
+      <StateNumber>1022</StateNumber>
       <ColNames>subject_id</ColNames>
-      <RefTableId>16492</RefTableId>
+      <RefTableId>16556</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>subjects</RefTableName>
       <RefKeyName>subjects_pk</RefKeyName>
@@ -301,59 +301,59 @@
       <Position>1</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>891</StateNumber>
+      <StateNumber>1024</StateNumber>
       <TypeId>20</TypeId>
     </column>
     <column id="48" parent="31" name="student_id">
       <Position>2</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>891</StateNumber>
+      <StateNumber>1024</StateNumber>
       <TypeId>20</TypeId>
     </column>
     <column id="49" parent="31" name="learning_id">
       <Position>3</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>891</StateNumber>
+      <StateNumber>1024</StateNumber>
       <TypeId>20</TypeId>
     </column>
     <column id="50" parent="31" name="progress_points">
       <Position>4</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>891</StateNumber>
+      <StateNumber>1024</StateNumber>
       <DefaultExpression>0</DefaultExpression>
       <TypeId>23</TypeId>
     </column>
     <index id="51" parent="31" name="progress_pk">
-      <ObjectId>16528</ObjectId>
-      <StateNumber>891</StateNumber>
+      <ObjectId>16593</ObjectId>
+      <StateNumber>1024</StateNumber>
       <ColNames>progress_id</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="52" parent="31" name="progress_pk">
-      <ObjectId>16529</ObjectId>
-      <StateNumber>891</StateNumber>
+      <ObjectId>16594</ObjectId>
+      <StateNumber>1024</StateNumber>
       <ColNames>progress_id</ColNames>
       <UnderlyingIndexName>progress_pk</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
     <foreign-key id="53" parent="31" name="students___fk">
-      <ObjectId>16530</ObjectId>
-      <StateNumber>891</StateNumber>
+      <ObjectId>16595</ObjectId>
+      <StateNumber>1024</StateNumber>
       <ColNames>student_id</ColNames>
-      <RefTableId>16513</RefTableId>
+      <RefTableId>16578</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>students</RefTableName>
       <RefKeyName>students_pk</RefKeyName>
       <RefColNames>student_id</RefColNames>
     </foreign-key>
     <foreign-key id="54" parent="31" name="learning___fk">
-      <ObjectId>16535</ObjectId>
-      <StateNumber>891</StateNumber>
+      <ObjectId>16600</ObjectId>
+      <StateNumber>1024</StateNumber>
       <ColNames>learning_id</ColNames>
-      <RefTableId>16498</RefTableId>
+      <RefTableId>16562</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>learning</RefTableName>
       <RefKeyName>learning_pk</RefKeyName>
@@ -363,49 +363,49 @@
       <Position>1</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>888</StateNumber>
+      <StateNumber>1023</StateNumber>
       <TypeId>20</TypeId>
     </column>
     <column id="56" parent="32" name="group_id">
       <Position>2</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>888</StateNumber>
+      <StateNumber>1023</StateNumber>
       <TypeId>20</TypeId>
     </column>
     <column id="57" parent="32" name="student_name">
       <Position>3</Position>
       <DataType>varchar(60)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>888</StateNumber>
+      <StateNumber>1023</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="58" parent="32" name="student_additional_points">
       <Position>4</Position>
       <DataType>double precision|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>894</StateNumber>
+      <StateNumber>1023</StateNumber>
       <DefaultExpression>0</DefaultExpression>
       <TypeId>701</TypeId>
     </column>
     <index id="59" parent="32" name="students_pk">
-      <ObjectId>16517</ObjectId>
-      <StateNumber>894</StateNumber>
+      <ObjectId>16582</ObjectId>
+      <StateNumber>1023</StateNumber>
       <ColNames>student_id</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="60" parent="32" name="students_pk">
-      <ObjectId>16518</ObjectId>
-      <StateNumber>888</StateNumber>
+      <ObjectId>16583</ObjectId>
+      <StateNumber>1023</StateNumber>
       <ColNames>student_id</ColNames>
       <UnderlyingIndexName>students_pk</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
     <foreign-key id="61" parent="32" name="groups__fk">
-      <ObjectId>16519</ObjectId>
-      <StateNumber>888</StateNumber>
+      <ObjectId>16584</ObjectId>
+      <StateNumber>1023</StateNumber>
       <ColNames>group_id</ColNames>
-      <RefTableId>16486</RefTableId>
+      <RefTableId>16550</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>groups</RefTableName>
       <RefKeyName>groups_pk</RefKeyName>
@@ -415,31 +415,31 @@
       <Position>1</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>881</StateNumber>
+      <StateNumber>1020</StateNumber>
       <TypeId>20</TypeId>
     </column>
     <column id="63" parent="33" name="subject_name">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>881</StateNumber>
+      <StateNumber>1020</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <index id="64" parent="33" name="subjects_pk">
-      <ObjectId>16495</ObjectId>
-      <StateNumber>881</StateNumber>
+      <ObjectId>16559</ObjectId>
+      <StateNumber>1020</StateNumber>
       <ColNames>subject_id</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="65" parent="33" name="subjects_subject_name_uindex">
-      <ObjectId>16497</ObjectId>
-      <StateNumber>882</StateNumber>
+      <ObjectId>16561</ObjectId>
+      <StateNumber>1021</StateNumber>
       <ColNames>subject_name</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="66" parent="33" name="subjects_pk">
-      <ObjectId>16496</ObjectId>
-      <StateNumber>881</StateNumber>
+      <ObjectId>16560</ObjectId>
+      <StateNumber>1020</StateNumber>
       <ColNames>subject_id</ColNames>
       <UnderlyingIndexName>subjects_pk</UnderlyingIndexName>
       <Primary>1</Primary>
