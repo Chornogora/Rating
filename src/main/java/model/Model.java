@@ -1,5 +1,6 @@
 package model;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -54,7 +55,11 @@ public class Model {
             coefSum += stProgresses.get(i).getLearning().getCoefficient();
         }
 
-        return Float.valueOf(String.format("%.2f", (float)(((sum/coefSum)*0.9) + student.getAdditionalPoints())));
+        float rating = (float)(((sum/coefSum)*0.9) + student.getAdditionalPoints());
+        DecimalFormat formatter = new DecimalFormat("#.##");
+        String value = formatter.format(Double.valueOf(rating));
+        value = value.replaceAll(",", ".");
+        return Float.valueOf(value);
     }
 
     public List<Learning> getStudentsLearnings(Student student){

@@ -423,7 +423,9 @@ public class TableFormController implements Initializable {
         try {
             String value = coefText.getText();
             DecimalFormat formatter = new DecimalFormat("#.##");
-            coef = Float.valueOf(formatter.format(Double.valueOf(value)));
+            String v = formatter.format(Double.valueOf(value));
+            v = v.replaceAll(",", ".");
+            coef =  Float.valueOf(v);
             if(coef < 0)
                 throw new Exception();
         } catch (Exception e) {
@@ -483,7 +485,9 @@ public class TableFormController implements Initializable {
         try {
             String value = stPoint.getText();
             DecimalFormat formatter = new DecimalFormat("#.##");
-            additionalPoints = Float.valueOf(formatter.format(Double.valueOf(value)));
+            String v = formatter.format(Double.valueOf(value));
+            v = v.replaceAll(",", ".");
+            additionalPoints =  Float.valueOf(v);
 
             if(additionalPoints > 10 || additionalPoints < 0)
                 throw new Exception();
@@ -525,7 +529,10 @@ public class TableFormController implements Initializable {
 
         try{
             String value = newPoints.getText();
-            points = Float.valueOf(new DecimalFormat("#.##").format(Double.valueOf(value)));
+            DecimalFormat formatter = new DecimalFormat("#.##");
+            String v = formatter.format(Double.valueOf(value));
+            v = v.replaceAll(",", ".");
+            points =  Float.valueOf(v);
             if(points > 10 || points < 0)
                 throw new Exception();
         }catch(Exception e){
@@ -657,7 +664,10 @@ public class TableFormController implements Initializable {
         special.add("Усi групи");
         special.addAll(Arrays.asList(groupNames));
 
-        GroupChoice.setItems(observableArrayList(special));
+        String[] arr = new String[special.size()];
+        special.toArray(arr);
+        
+        GroupChoice.setItems(observableArrayList(arr));
         GroupChoice.setValue("Усi групи");
 
         GroupChoice2.setItems(observableArrayList(special));
@@ -713,6 +723,7 @@ public class TableFormController implements Initializable {
         model.getLearnings().remove(learn);
         new LearningDao().delete(learn);
 
+        refreshData();
     }
 
     private void deleteStudent(Student student){
@@ -724,6 +735,8 @@ public class TableFormController implements Initializable {
         }
         model.getStudents().remove(student);
         new StudentDao().delete(student);
+
+        refreshData();
     }
 
     private void removeSubject(Subject subject){
@@ -733,6 +746,8 @@ public class TableFormController implements Initializable {
 
         model.getSubjects().remove(subject);
         new SubjectDao().delete(subject);
+
+        refreshData();
     }
 
     private void removeGroup(Group group){
@@ -743,6 +758,8 @@ public class TableFormController implements Initializable {
 
         model.getGroups().remove(group);
         new GroupDao().delete(group);
+
+        refreshData();
     }
     //</SMART удаление>
 }
